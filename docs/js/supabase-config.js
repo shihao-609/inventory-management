@@ -11,6 +11,30 @@
 const SUPABASE_URL = 'https://bvgtenrrxdhczlvebjxj.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z3RlbnJyeGRoY3psdmVianhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMjk5NTEsImV4cCI6MjA5MTkwNTk1MX0.K4HBL1_sGg-79N5CoF_M6V-YlPibSrdoVvd9k515D28';
 
+// CORS 代理配置 - 用于解决 GitHub Pages 访问 Supabase 的跨域问题
+// 使用多个代理服务，如果其中一个失败会自动切换到下一个
+const CORS_PROXIES = [
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?',
+  'https://api.codetabs.com/v1/proxy?quest='
+];
+let currentProxyIndex = 0;
+
+/**
+ * 获取当前 CORS 代理 URL
+ */
+function getCorsProxyUrl() {
+  return CORS_PROXIES[currentProxyIndex];
+}
+
+/**
+ * 切换到下一个代理
+ */
+function switchToNextProxy() {
+  currentProxyIndex = (currentProxyIndex + 1) % CORS_PROXIES.length;
+  console.log('[CORS Proxy] 切换到代理:', getCorsProxyUrl());
+}
+
 const TABLES = {
   GOODS: 'goods',
   CATEGORIES: 'categories',
@@ -155,9 +179,9 @@ class SupabaseClient {
   }
 
   /**
-   * 实际执行请求
+   * 实际执行请求 - 带 CORS 代理支持
    */
-  async doRequest(method, endpoint, params = null, body = null) {
+  async doRequest(method, endpoint, params = null, body = null, retryCount = 0) {
     // 分离 endpoint 中的查询参数
     let endpointParams = '';
     let baseEndpoint = endpoint;
@@ -193,22 +217,42 @@ class SupabaseClient {
       url += `?${queryParts.join('&')}`;
     }
 
-    console.log('[Supabase Request]', method, url);
-
-    const response = await fetch(url, {
-      method,
-      headers: this.headers,
-      body: body ? JSON.stringify(body) : null
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      console.error('[Supabase Error]', response.status, data);
-      throw new Error(data.message || `Request failed with status ${response.status}`);
+    // 检测是否在 GitHub Pages 环境
+    const isGitHubPages = typeof window !== 'undefined' && 
+                          window.location.hostname.includes('github.io');
+    
+    // 构建最终请求 URL（添加 CORS 代理）
+    let finalUrl = url;
+    if (isGitHubPages) {
+      finalUrl = getCorsProxyUrl() + encodeURIComponent(url);
     }
 
-    return data;
+    console.log('[Supabase Request]', method, isGitHubPages ? '(via proxy)' : '', url);
+
+    try {
+      const response = await fetch(finalUrl, {
+        method,
+        headers: this.headers,
+        body: body ? JSON.stringify(body) : null
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error('[Supabase Error]', response.status, data);
+        throw new Error(data.message || `Request failed with status ${response.status}`);
+      }
+
+      return data;
+    } catch (error) {
+      // 如果是 CORS 错误且在 GitHub Pages 环境，尝试切换代理
+      if (isGitHubPages && retryCount < CORS_PROXIES.length - 1) {
+        console.warn('[CORS Proxy] 请求失败，尝试切换代理...', error.message);
+        switchToNextProxy();
+        return this.doRequest(method, endpoint, params, body, retryCount + 1);
+      }
+      throw error;
+    }
   }
 
   // ========== 基础 CRUD 操作 ==========
