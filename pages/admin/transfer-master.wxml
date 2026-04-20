@@ -1,0 +1,72 @@
+<view class="container">
+  <!-- 页面标题 -->
+  <view class="page-title">主管理员权限转移</view>
+  
+  <!-- 权限说明 -->
+  <view class="permission-info">
+    <text class="info-text">• 一个小程序只能有 1 个主管理员</text>
+    <text class="info-text">• 只有主管理员可以执行转移操作</text>
+    <text class="info-text">• 不能直接删除/取消主管理员，只能转移给其他已存在的管理员</text>
+    <text class="info-text">• 转移后：新用户 = 主管理员，原主管理员 = 普通管理员</text>
+  </view>
+  
+  <!-- 管理员列表 -->
+  <view class="form-card" style="margin-top: 24rpx;">
+    <view class="form-title">管理员列表</view>
+    
+    <view class="account-list" wx:if="{{adminList.length > 0}}">
+      <view 
+        class="account-item" 
+        wx:for="{{adminList}}" 
+        wx:key="{{item._openid}}"
+      >
+        <view class="account-info">
+          <image class="avatar" src="{{item.avatar || '/images/default-avatar.png'}}" mode="aspectFill"></image>
+          <text class="account-nickname">{{item.nickname}}</text>
+          <text class="account-role">管理员</text>
+          <text class="account-master" wx:if="{{item.role === 'master'}}">主管理员</text>
+        </view>
+        <view class="account-actions">
+          <button 
+            class="action-btn transfer"
+            bindtap="transferMaster"
+            data-openid="{{item._openid}}"
+            data-nickname="{{item.nickname}}"
+            disabled="{{item.role === 'master' || submitting || !currentUser || currentUser.role !== 'master'}}"
+          >
+            {{item.role === 'master' ? '当前主管理员' : '转移为新主管理员'}}
+          </button>
+        </view>
+      </view>
+    </view>
+    
+    <view class="empty-list" wx:else>
+      <text>暂无管理员，请先添加</text>
+    </view>
+  </view>
+  
+  <!-- 确认转移弹窗 -->
+  <view class="modal-mask" wx:if="{{showConfirmModal}}">
+    <view class="modal-content">
+      <view class="modal-title">确认转移</view>
+      <view class="modal-body">
+        <text class="modal-text">确定要将主管理员权限转移给 {{selectedUserNickname}} 吗？</text>
+        <text class="modal-text">转移后，您将成为普通管理员。</text>
+      </view>
+      <view class="modal-buttons">
+        <button class="modal-btn cancel" bindtap="closeConfirmModal">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmTransfer" disabled="{{submitting}}">
+          {{submitting ? '转移中...' : '确认转移'}}
+        </button>
+      </view>
+    </view>
+  </view>
+  
+  <!-- 加载动画 -->
+  <view class="loading-overlay" wx:if="{{submitting}}">
+    <view class="loading-content">
+      <view class="loading-spinner"></view>
+      <text class="loading-text">处理中...</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,126 @@
+<view class="container">
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 商品详情 -->
+  <view class="detail-content" wx:if="{{goods && !loading}}">
+    <!-- 基本信息卡片 -->
+    <view class="card goods-info-card">
+      <view class="goods-header">
+        <!-- 商品名称 -->
+        <view class="goods-name-section" wx:if="{{!editMode}}">
+          <text class="goods-name">{{goods.name}}</text>
+          <text class="edit-icon" bindtap="enterEditMode">编辑</text>
+        </view>
+        <!-- 商品名称编辑（编辑模式） -->
+        <view class="goods-name-edit" wx:if="{{editMode}}">
+          <view class="edit-item">
+            <text class="label">商品名称</text>
+            <input 
+              class="input-field" 
+              placeholder="请输入商品名称"
+              value="{{editData.name}}"
+              data-field="name"
+              bindinput="onNameEditInput"
+            />
+          </view>
+          <button class="btn-action" bindtap="updateName">保存</button>
+        </view>
+      </view>
+      
+      <!-- 物品编号（只读） -->
+      <view class="goods-code-section">
+        <text class="label">物品编号：</text>
+        <text class="value">{{goods.itemCode || '—'}}</text>
+      </view>
+    </view>
+
+    <!-- 库存信息卡片 -->
+    <view class="card stock-card">
+      <view class="card-title">库存信息</view>
+      
+      <!-- 库存数量显示 -->
+      <view class="stock-display">
+        <view class="stock-main">
+          <text class="stock-num {{goods.stock <= 0 ? 'text-danger' : ''}}">{{goods.stock || 0}}</text>
+          <text class="stock-unit">件</text>
+        </view>
+        <view class="stock-actions">
+          <view class="action-btn" bindtap="quickStockIn">
+            <text>+ 入库</text>
+          </view>
+          <view class="action-btn" bindtap="quickStockOut">
+            <text>- 出库</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 位置和售价卡片 -->
+    <view class="card info-card">
+      <view class="card-title">其他信息</view>
+      
+      <!-- 位置序号 -->
+      <view class="info-item">
+        <view class="info-label">存放位置</view>
+        <view class="info-value" wx:if="{{!editMode}}">
+          <text class="position-value {{goods.location ? 'has-value' : ''}}">{{goods.location || '请选择位置'}}</text>
+          <text class="edit-icon" bindtap="onSelectPosition">选择</text>
+        </view>
+      </view>
+
+      <!-- 售价 -->
+      <view class="info-item">
+        <view class="info-label">售价</view>
+        <view class="info-value" wx:if="{{!editMode}}">
+          <text class="price">¥{{goods.price || 0}}</text>
+          <text class="edit-icon" bindtap="enterEditMode">编辑</text>
+        </view>
+        <view class="info-edit" wx:if="{{editMode}}">
+          <view class="edit-item-inline">
+            <input 
+              class="input-field" 
+              type="digit"
+              placeholder="请输入售价"
+              value="{{editData.price}}"
+              data-field="price"
+              bindinput="onEditInput"
+            />
+          </view>
+          <button class="btn-inline" bindtap="updatePrice">保存</button>
+        </view>
+      </view>
+
+      <!-- 最后更新时间 -->
+      <view class="info-item">
+        <view class="info-label">最后更新</view>
+        <view class="info-value">
+          <text class="text-gray">{{formattedTime || '-'}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="btn-group">
+      <button wx:if="{{!editMode}}" class="btn-save" bindtap="enterEditMode">编辑</button>
+      <button wx:if="{{editMode}}" class="btn-back" bindtap="cancelEdit">取消编辑</button>
+      <button class="btn-delete" bindtap="deleteGoods">删除商品</button>
+    </view>
+  </view>
+
+  <!-- 商品不存在 -->
+  <view class="empty-state" wx:if="{{!goods && !loading}}">
+    <text>商品不存在</text>
+  </view>
+
+  <!-- 位置选择器 -->
+  <position-picker
+    show="{{showPositionPicker}}"
+    value="{{editData.location}}"
+    bind:confirm="onPositionConfirm"
+    bind:cancel="onPositionCancel"
+  />
+
+</view>

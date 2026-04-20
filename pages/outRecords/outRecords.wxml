@@ -1,0 +1,67 @@
+<!-- 出库记录页面 -->
+<view class="container">
+  <!-- 搜索栏 -->
+  <view class="search-bar">
+    <input 
+      class="search-input" 
+      placeholder="搜索商品名称或编号" 
+      bindinput="onSearch"
+      value="{{searchKey}}"
+    />
+  </view>
+
+  <!-- 记录列表 -->
+  <scroll-view 
+    class="record-list" 
+    scroll-y="{{true}}"
+    enhanced="{{true}}"
+    show-scrollbar="{{false}}"
+    bindscrolltolower="onReachBottom"
+  >
+    <block wx:if="{{recordList.length > 0}}">
+      <view 
+        class="record-item"
+        wx:for="{{recordList}}"
+        wx:key="_id"
+        bindlongpress="onLongPress"
+        data-id="{{item._id}}"
+        data-goodsid="{{item.goodsId}}"
+        data-quantity="{{item.quantity}}"
+        data-goodsname="{{item.goodsName}}"
+      >
+        <view class="record-main">
+          <view class="record-header">
+            <text class="goods-name">{{item.goodsName}}</text>
+            <text class="out-quantity">-{{item.quantity}}</text>
+          </view>
+          <view class="record-info">
+            <text class="goods-code">编号: {{item.itemCode || '-'}}</text>
+            <text class="out-time">{{item.outTime}}</text>
+          </view>
+        </view>
+        <view class="record-stock">
+          <text class="stock-label">当前库存</text>
+          <text class="stock-value {{item.currentStock < 10 ? 'warning' : ''}}">{{item.currentStock}}</text>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="empty-state" wx:if="{{!loading}}">
+        <text>暂无出库记录</text>
+      </view>
+    </block>
+
+    <!-- 加载状态 -->
+    <view class="loading-more" wx:if="{{loadingMore}}">
+      <text>加载中...</text>
+    </view>
+    <view class="no-more" wx:if="{{!hasMore && recordList.length > 0}}">
+      <text>没有更多了</text>
+    </view>
+  </scroll-view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+</view>

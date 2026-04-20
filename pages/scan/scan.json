@@ -1,0 +1,7 @@
+{
+  "usingComponents": {
+    "position-picker": "/components/position-picker/position-picker"
+  },
+  "navigationBarTitleText": "库存管理",
+  "enablePullDownRefresh": false
+}

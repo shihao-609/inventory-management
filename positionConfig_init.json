@@ -1,0 +1,79 @@
+[
+  {
+    "floor": "1F",
+    "floorName": "1楼",
+    "sortOrder": 1,
+    "enabledTypes": [
+      {
+        "typeKey": "H",
+        "typeName": "货架",
+        "hasLayer": true,
+        "numberPrefix": "H",
+        "numberRange": ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20"],
+        "layerOptions": ["第1层","第2层","第3层","第4层","第5层","顶层","整架"]
+      },
+      {
+        "typeKey": "G",
+        "typeName": "展柜",
+        "hasLayer": true,
+        "numberPrefix": "G",
+        "numberRange": ["01","02","03","04","05","06","07","08"],
+        "layerOptions": ["第1层","第2层","第3层","顶层","整架"]
+      },
+      {
+        "typeKey": "D",
+        "typeName": "地面",
+        "hasLayer": false,
+        "numberPrefix": "D",
+        "numberRange": ["A区","B区","C区","D区","E区","F区","G区"],
+        "layerOptions": []
+      }
+    ]
+  },
+  {
+    "floor": "2F",
+    "floorName": "2楼",
+    "sortOrder": 2,
+    "enabledTypes": [
+      {
+        "typeKey": "H",
+        "typeName": "货架",
+        "hasLayer": true,
+        "numberPrefix": "H",
+        "numberRange": ["01","02","03","04","05","06","07","08","09","10","11","12","13","14","15"],
+        "layerOptions": ["第1层","第2层","第3层","第4层","第5层","顶层","整架"]
+      },
+      {
+        "typeKey": "D",
+        "typeName": "地面",
+        "hasLayer": false,
+        "numberPrefix": "D",
+        "numberRange": ["A区","B区","C区","D区","E区","F区","G区"],
+        "layerOptions": []
+      }
+    ]
+  },
+  {
+    "floor": "3F",
+    "floorName": "3楼",
+    "sortOrder": 3,
+    "enabledTypes": [
+      {
+        "typeKey": "H",
+        "typeName": "货架",
+        "hasLayer": true,
+        "numberPrefix": "H",
+        "numberRange": ["01","02","03","04","05","06","07","08","09","10"],
+        "layerOptions": ["第1层","第2层","第3层","第4层","第5层","顶层","整架"]
+      },
+      {
+        "typeKey": "D",
+        "typeName": "地面",
+        "hasLayer": false,
+        "numberPrefix": "D",
+        "numberRange": ["A区","B区","C区","D区","E区","F区","G区"],
+        "layerOptions": []
+      }
+    ]
+  }
+]

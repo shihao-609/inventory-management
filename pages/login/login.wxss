@@ -1,0 +1,197 @@
+/* 登录页面样式 */
+
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40rpx;
+}
+
+.login-card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 48rpx;
+  box-shadow: 0 10rpx 40rpx rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500rpx;
+}
+
+.title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 8rpx;
+}
+
+.subtitle {
+  font-size: 24rpx;
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 48rpx;
+}
+
+.form {
+  width: 100%;
+}
+
+.form-item {
+  margin-bottom: 32rpx;
+}
+
+.form-item .label {
+  display: block;
+  font-size: 26rpx;
+  color: #475569;
+  margin-bottom: 12rpx;
+  font-weight: 500;
+}
+
+.input-field {
+  width: 100%;
+  padding: 16rpx 20rpx;
+  background-color: #f8fafc;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #1e293b;
+  box-sizing: border-box;
+  height: 80rpx;
+  line-height: 80rpx;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: #6366f1;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4rpx rgba(99, 102, 241, 0.1);
+}
+
+.input-field::placeholder {
+  color: #94a3b8;
+}
+
+.security-tip {
+  font-size: 22rpx;
+  color: #64748b;
+  text-align: center;
+  margin-bottom: 24rpx;
+  line-height: 1.5;
+}
+
+.admin-entry {
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+.admin-text {
+  font-size: 24rpx;
+  color: #6366f1;
+  text-decoration: underline;
+}
+
+.login-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+}
+
+.login-btn:active:not([disabled]) {
+  transform: scale(0.98);
+}
+
+.login-btn[disabled] {
+  background: #94a3b8;
+  box-shadow: none;
+}
+
+/* 对话框样式 */
+.dialog-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.dialog-content {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 0;
+  width: 80%;
+  max-width: 500rpx;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.3);
+}
+
+.dialog-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 32rpx 32rpx 24rpx;
+  border-bottom: 1rpx solid #e2e8f0;
+}
+
+.dialog-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.dialog-close {
+  font-size: 32rpx;
+  color: #64748b;
+  cursor: pointer;
+}
+
+.dialog-body {
+  padding: 32rpx;
+}
+
+.dialog-footer {
+  display: flex;
+  gap: 20rpx;
+  padding: 0 32rpx 32rpx;
+}
+
+.dialog-btn {
+  flex: 1;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dialog-btn.cancel {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: none;
+}
+
+.dialog-btn.confirm {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border: none;
+}
+
+.dialog-btn:active:not([disabled]) {
+  transform: scale(0.98);
+}
+
+.dialog-btn[disabled] {
+  opacity: 0.6;
+}

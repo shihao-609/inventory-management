@@ -1,0 +1,253 @@
+/**
+ * 全局样式 - 现代简洁风格
+ * 主色调：#3b82f6 (浅蓝)
+ * 辅助色：#10b981 (翠绿), #f59e0b (琥珀)
+ * 背景色：#f8fafc (浅灰蓝)
+ */
+page {
+  background-color: #f8fafc;
+  font-size: 28rpx;
+  color: #1e293b;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* 容器样式 */
+.container {
+  padding: 24rpx;
+}
+
+/* 按钮样式 - 现代圆角 */
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  color: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx 48rpx;
+  font-size: 28rpx;
+  border: none;
+  font-weight: 500;
+  box-shadow: 0 4rpx 16rpx rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease;
+}
+
+.btn-primary:active {
+  transform: translateY(2rpx);
+  box-shadow: 0 2rpx 8rpx rgba(59, 130, 246, 0.3);
+}
+
+.btn-default {
+  background-color: #ffffff;
+  color: #475569;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 16rpx;
+  padding: 24rpx 48rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.btn-default:active {
+  background-color: #f1f5f9;
+}
+
+.btn-danger {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx 48rpx;
+  font-size: 28rpx;
+  border: none;
+  font-weight: 500;
+  box-shadow: 0 4rpx 16rpx rgba(239, 68, 68, 0.3);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: #ffffff;
+  border-radius: 16rpx;
+  padding: 24rpx 48rpx;
+  font-size: 28rpx;
+  border: none;
+  font-weight: 500;
+  box-shadow: 0 4rpx 16rpx rgba(16, 185, 129, 0.3);
+}
+
+/* 输入框样式 - 现代风格 */
+.input-field {
+  background-color: #ffffff;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  width: 100%;
+  box-sizing: border-box;
+  transition: all 0.2s ease;
+  color: #1e293b;
+}
+
+.input-field:focus {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 4rpx rgba(59, 130, 246, 0.1);
+}
+
+.input-field::placeholder {
+  color: #94a3b8;
+}
+
+/* 卡片样式 - 现代阴影 */
+.card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  border: 1rpx solid rgba(226, 232, 240, 0.6);
+}
+
+.card-hover {
+  transition: all 0.2s ease;
+}
+
+.card-hover:active {
+  transform: scale(0.99);
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+/* 标题样式 */
+.title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 20rpx;
+}
+
+.subtitle {
+  font-size: 26rpx;
+  color: #64748b;
+  font-weight: 400;
+}
+
+/* 分割线 - 更柔和 */
+.divider {
+  height: 1rpx;
+  background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+  margin: 24rpx 0;
+}
+
+/* Flex布局工具类 */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 标签样式 */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.tag-primary {
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.tag-success {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.tag-warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.tag-danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* 图标按钮 */
+.icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  background-color: #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.icon-btn:active {
+  background-color: #e2e8f0;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-icon {
+  font-size: 120rpx;
+  margin-bottom: 24rpx;
+  opacity: 0.3;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #94a3b8;
+  text-align: center;
+}
+
+/* 加载状态 */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+}
+
+.loading-spinner {
+  width: 40rpx;
+  height: 40rpx;
+  border: 4rpx solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 底部安全区域 */
+.safe-area-bottom {
+  padding-bottom: constant(safe-area-inset-bottom);
+  padding-bottom: env(safe-area-inset-bottom);
+}

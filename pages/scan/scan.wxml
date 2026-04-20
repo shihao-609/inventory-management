@@ -1,0 +1,373 @@
+<!-- 扫描录入页面 - 双模式版
+  入库扫描/物品查询/手动新增 三种模式
+-->
+<view class="container" bindtap="onContainerTap">
+  <!-- 可滚动内容区域 -->
+  <scroll-view 
+    class="scroll-content" 
+    scroll-y="{{true}}"
+    enhanced="{{true}}"
+    show-scrollbar="{{true}}"
+    scroll-with-animation="{{true}}"
+    enable-back-to-top="{{true}}"
+    bounces="{{true}}"
+    type="list"
+    fast-deceleration="{{true}}"
+    scroll-anchoring="{{true}}"
+  >
+    <!-- 识别结果区（物品编号）- 入库扫描模式 -->
+    <view class="card scan-card" wx:if="{{mainMode === 'stockIn'}}">
+      <view class="card-header">
+        <text class="card-title">物品编号</text>
+        <text class="goods-status" wx:if="{{scanResult}}">{{isNewGoods ? '新增商品' : '已存在商品'}}</text>
+      </view>
+      
+      <view class="textarea-wrapper">
+        <textarea 
+          class="textarea-field"
+          placeholder="请扫描物品编号"
+          value="{{formData.itemCode}}"
+          bindinput="onInput"
+          data-field="itemCode"
+          disabled="{{isFromScan}}"
+          auto-height="{{true}}"
+          min-height="{{120}}"
+        />
+      </view>
+      
+      <!-- 入库扫描模式显示扫码查询 -->
+      <button class="btn-rescan btn-query" bindtap="scanCode">扫码查询</button>
+    </view>
+
+    <!-- 物品查询模式：商品名称搜索 -->
+    <view class="card scan-card" wx:if="{{mainMode === 'query'}}">
+      <view class="card-header">
+        <text class="card-title">商品名称</text>
+        <text class="goods-status" wx:if="{{formData.name}}">{{isNewGoods ? '新增商品' : '已存在商品'}}</text>
+      </view>
+      
+      <!-- 可搜索下拉选择器 -->
+      <view class="search-picker-wrapper" catchtap="stopPropagation">
+        <view class="search-picker-input {{showDropdown ? 'active' : ''}}" catchtap="toggleDropdown">
+          <input 
+            class="input-field"
+            placeholder="请输入商品名称搜索"
+            value="{{searchKeyword}}"
+            bindinput="onSearchInputUpper"
+            bindfocus="onSearchFocus"
+            catchtap="stopPropagation"
+          />
+          <text class="picker-arrow {{showDropdown ? 'up' : ''}}" catchtap="toggleDropdown">▼</text>
+        </view>
+        
+        <!-- 下拉列表 -->
+        <view class="search-dropdown {{showDropdown ? 'show' : ''}}" catchtap="stopPropagation">
+          <block wx:if="{{searchResults.length > 0}}">
+            <view 
+              class="dropdown-item {{selectedIndex === index ? 'selected' : ''}}"
+              wx:for="{{searchResults}}"
+              wx:key="_id"
+              bindtap="selectGoods"
+              data-index="{{index}}"
+            >
+              <view class="item-main">
+                <text class="item-name">{{item.name}}</text>
+                <text class="item-stock">库存: {{item.stock || 0}}</text>
+              </view>
+              <text class="item-code">{{item.itemCode}}</text>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="dropdown-empty">
+              <text>{{searchKeyword ? '暂无匹配商品' : '请输入商品名称搜索'}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <!-- 物品查询模式：扫码按钮 -->
+      <button class="btn-rescan btn-query" bindtap="scanCode">扫码查询</button>
+    </view>
+
+    <!-- 手动入库模式：商品名称可搜索下拉选择器 -->
+    <view class="card scan-card" wx:if="{{mainMode === 'add'}}">
+      <view class="card-header">
+        <text class="card-title">商品名称</text>
+        <text class="goods-status" wx:if="{{formData.name}}">{{isNewGoods ? '新增商品' : '已存在商品'}}</text>
+      </view>
+      
+      <!-- 可搜索下拉选择器 -->
+      <view class="search-picker-wrapper" catchtap="stopPropagation">
+        <view class="search-picker-input {{showDropdown ? 'active' : ''}}" catchtap="toggleDropdown">
+          <input 
+            class="input-field"
+            placeholder="请输入商品名称搜索"
+            value="{{searchKeyword}}"
+            bindinput="onSearchInputUpper"
+            bindfocus="onSearchFocus"
+            catchtap="stopPropagation"
+          />
+          <text class="picker-arrow {{showDropdown ? 'up' : ''}}" catchtap="toggleDropdown">▼</text>
+        </view>
+        
+        <!-- 下拉列表 -->
+        <view class="search-dropdown {{showDropdown ? 'show' : ''}}" catchtap="stopPropagation">
+          <block wx:if="{{searchResults.length > 0}}">
+            <view 
+              class="dropdown-item {{selectedIndex === index ? 'selected' : ''}}"
+              wx:for="{{searchResults}}"
+              wx:key="_id"
+              bindtap="selectGoods"
+              data-index="{{index}}"
+            >
+              <view class="item-main">
+                <text class="item-name">{{item.name}}</text>
+                <text class="item-stock">库存: {{item.stock || 0}}</text>
+              </view>
+              <text class="item-code">{{item.itemCode}}</text>
+            </view>
+          </block>
+          <block wx:else>
+            <view class="dropdown-empty">
+              <text>{{searchKeyword ? '暂无匹配商品' : '请输入商品名称搜索'}}</text>
+            </view>
+          </block>
+        </view>
+      </view>
+      
+      <text class="stock-hint" wx:if="{{formData.name && isNewGoods}}">新商品，提交后将自动生成物品编号</text>
+      <text class="stock-hint" wx:if="{{formData.name && !isNewGoods}}">已匹配到同名商品，可填写进货数量</text>
+    </view>
+
+    <!-- 商品信息区 -->
+    <view class="card goods-card">
+      <view class="card-header">
+        <text class="card-title">商品信息</text>
+      </view>
+      
+      <!-- 商品名称（扫码入库/物品查询模式可编辑，手动入库模式显示只读） -->
+      <view class="form-item" wx:if="{{mainMode !== 'add'}}">
+        <text class="label">商品名称 <text class="required" wx:if="{{mainMode === 'stockIn'}}">*</text></text>
+        <input 
+          class="input-field {{mainMode === 'query' ? 'input-disabled' : ''}}" 
+          placeholder="{{mainMode === 'query' ? '商品名称' : '请手动输入商品名称'}}"
+          value="{{formData.name}}"
+          data-field="name"
+          bindinput="onNameInput"
+          disabled="{{mainMode === 'query'}}"
+        />
+      </view>
+
+      <!-- 商品名称（手动入库模式显示） -->
+      <view class="form-item" wx:if="{{mainMode === 'add'}}">
+        <text class="label">商品名称</text>
+        <view class="item-code-display">
+          <text class="item-code-value {{formData.name ? '' : 'placeholder'}}">{{formData.name || '商品名称'}}</text>
+        </view>
+      </view>
+
+      <!-- 位置（入库/手动新增模式：点击选择，物品查询模式：只读显示） -->
+      <view class="form-item">
+        <text class="label">位置 <text class="required" wx:if="{{mainMode === 'stockIn' || mainMode === 'add'}}">*</text></text>
+        <!-- 入库扫描/手动新增模式：点击选择按钮 -->
+        <view 
+          wx:if="{{mainMode !== 'query'}}"
+          class="input-field position-selector {{!formData.location && (mainMode === 'stockIn' || mainMode === 'add') ? 'input-error' : ''}}" 
+          bindtap="onSelectPosition"
+        >
+          <text class="{{formData.location ? '' : 'placeholder'}}">{{formData.location || '请选择位置'}}</text>
+        </view>
+        <!-- 物品查询模式：只读显示 -->
+        <view 
+          wx:if="{{mainMode === 'query'}}"
+          class="input-field input-disabled"
+        >
+          <text>{{formData.location || '-'}}</text>
+        </view>
+        <text class="error-message" wx:if="{{!formData.location && (mainMode === 'stockIn' || mainMode === 'add')}}">请选择商品位置</text>
+      </view>
+
+      <!-- 库存区域 -->
+      <view class="form-item">
+        <view class="stock-header">
+          <text class="label">库存</text>
+          <!-- 入库扫描/新增模式：显示修改总库存开关（盘库专用） -->
+          <switch 
+            wx:if="{{mainMode === 'stockIn' || mainMode === 'add'}}"
+            checked="{{enableStockEdit}}" 
+            bindchange="onStockEditSwitchChange"
+            color="#1890ff"
+          />
+          <text class="switch-label" wx:if="{{mainMode === 'stockIn' || mainMode === 'add'}}">修改总库存</text>
+        </view>
+        
+        <!-- 入库扫描/新增模式：本次进货数量（默认显示） -->
+        <view wx:if="{{mainMode === 'stockIn' || mainMode === 'add'}}">
+          <!-- 开关关闭：显示本次进货数量输入框 -->
+          <view wx:if="{{!enableStockEdit}}" class="purchase-quantity-wrapper">
+            <input 
+              class="input-field" 
+              type="number"
+              placeholder="请输入本次进货数量"
+              value="{{purchaseQuantity}}"
+              bindinput="onPurchaseQuantityInput"
+            />
+            <text class="stock-hint">当前库存: {{existingGoods ? existingGoods.stock : 0}} 件</text>
+          </view>
+          
+          <!-- 开关打开：显示总库存直接修改输入框（盘库模式） -->
+          <view wx:if="{{enableStockEdit}}" class="stock-edit-wrapper">
+            <input 
+              class="input-field stock-input" 
+              type="number"
+              placeholder="请输入总库存数量"
+              value="{{formData.stock}}"
+              bindinput="onTotalStockInput"
+            />
+            <text class="stock-hint">盘库模式：直接设置总库存</text>
+          </view>
+        </view>
+        
+        <!-- 物品查询模式：显示库存（有警示）- 长按/多次点击触发进价查看 -->
+        <view 
+          wx:if="{{mainMode === 'query'}}" 
+          class="stock-display stock-query-display"
+          bindtap="onStockClick"
+          bindlongpress="onStockLongPress"
+        >
+          <text class="stock-num {{(formData.stock || 0) < 10 ? 'stock-warning' : ''}}">
+            {{formData.stock || 0}}
+          </text>
+          <text class="stock-unit">件</text>
+          <!-- 库存不足警示 -->
+          <view class="warning-tag" wx:if="{{(formData.stock || 0) < 10}}">
+            <text>库存不足</text>
+          </view>
+          <!-- 隐形触发提示（仅开发者可见，实际不渲染） -->
+          <view style="display:none;">{{clickCount}}</view>
+        </view>
+        
+
+      </view>
+
+      <!-- 售价 -->
+      <view class="form-item">
+        <text class="label">售价</text>
+        <view class="price-display" wx:if="{{mainMode === 'query'}}">
+          <text class="price-value">¥{{formData.price || 0}}</text>
+        </view>
+        <input 
+          wx:if="{{mainMode !== 'query'}}"
+          class="input-field" 
+          type="digit"
+          placeholder="请输入售价"
+          value="{{formData.price}}"
+          data-field="price"
+          bindinput="onInput"
+        />
+      </view>
+
+      <!-- 进价：入库扫描/新增模式显示，物品查询模式完全隐藏（极致隐蔽） -->
+      <view class="form-item cost-price-item" wx:if="{{mainMode !== 'query'}}">
+        <view class="collapse-header" bindtap="toggleCostPrice">
+          <text class="label">进价（可选）</text>
+          <text class="collapse-arrow {{showCostPrice ? 'up' : ''}}">▼</text>
+        </view>
+        <view class="collapse-content" wx:if="{{showCostPrice}}">
+          <input 
+            class="input-field" 
+            type="digit"
+            placeholder="请输入进价"
+            value="{{formData.costPrice}}"
+            data-field="costPrice"
+            bindinput="onInput"
+          />
+        </view>
+      </view>
+      <!-- 物品查询模式：完全不显示任何进价相关内容 -->
+    </view>
+
+    <!-- 底部安全间距 -->
+    <view class="scroll-bottom-space"></view>
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="btn-group">
+    <!-- 入库扫描/新增模式：显示保存按钮 -->
+    <button 
+      wx:if="{{mainMode === 'stockIn' || mainMode === 'add'}}"
+      class="btn-save" 
+      bindtap="saveGoods"
+    >
+      {{mainMode === 'stockIn' ? '确认入库' : '保存'}}
+    </button>
+    <!-- 物品查询模式：显示出库和返回按钮 -->
+    <button 
+      wx:if="{{mainMode === 'query' && existingGoods}}"
+      class="btn-out" 
+      bindtap="onOutStock"
+    >
+      出库
+    </button>
+    <button class="btn-back" bindtap="goBack">返回</button>
+  </view>
+
+  <!-- 位置选择弹窗 -->
+  <position-picker
+    show="{{showPositionPicker}}"
+    value="{{formData.location}}"
+    bind:confirm="onPositionConfirm"
+    bind:cancel="onPositionCancel"
+  />
+
+  <!-- 出库弹窗 -->
+  <view class="modal-mask {{showOutboundModal ? 'show' : ''}}" bindtap="closeOutboundModal" wx:if="{{showOutboundModal}}">
+    <view class="modal-content" catchtap="stopPropagation">
+      <view class="modal-header">
+        <text class="modal-title">出库</text>
+      </view>
+      
+      <view class="modal-body">
+        <!-- 出库数量 -->
+        <view class="modal-form-item">
+          <text class="modal-label">出库数量</text>
+          <input 
+            class="modal-input" 
+            type="number"
+            placeholder="请输入出库数量"
+            value="{{outboundQuantity}}"
+            bindinput="onOutboundQuantityInput"
+            focus="{{showOutboundModal}}"
+          />
+        </view>
+
+        <!-- 售价编辑 -->
+        <view class="modal-form-item">
+          <view class="modal-switch-header">
+            <text class="modal-label">售价</text>
+            <switch 
+              checked="{{enablePriceEdit}}" 
+              bindchange="onPriceEditSwitchChange"
+              color="#1890ff"
+              size="small"
+            />
+          </view>
+          <input 
+            class="modal-input {{enablePriceEdit ? 'editable' : 'readonly'}}" 
+            type="digit"
+            placeholder="请输入售价"
+            value="{{outboundPrice}}"
+            bindinput="onOutboundPriceInput"
+            disabled="{{!enablePriceEdit}}"
+          />
+          <text class="modal-hint" wx:if="{{!enablePriceEdit}}">开启开关后可修改售价</text>
+        </view>
+      </view>
+
+      <view class="modal-footer">
+        <button class="modal-btn modal-btn-cancel" bindtap="closeOutboundModal">取消</button>
+        <button class="modal-btn modal-btn-confirm" bindtap="confirmOutbound">确定</button>
+      </view>
+    </view>
+  </view>
+</view>

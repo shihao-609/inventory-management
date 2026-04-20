@@ -1,0 +1,464 @@
+/* 首页样式 - 现代简洁风格 */
+
+/* 用户信息栏 - 紧凑顶部栏 */
+.user-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16rpx 32rpx;
+  background: linear-gradient(135deg, #1e40af, #3b82f6);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.user-icon {
+  font-size: 28rpx;
+}
+
+.user-name {
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.9);
+  font-weight: 500;
+  max-width: 280rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  padding: 8rpx 20rpx;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 20rpx;
+  border: 1rpx solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 24rpx;
+  transition: all 0.2s ease;
+}
+
+.logout-btn:active {
+  background: rgba(239, 68, 68, 0.5);
+  transform: scale(0.96);
+}
+
+.logout-icon {
+  font-size: 26rpx;
+}
+
+/* 全局容器 */
+.container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding-bottom: 0;
+}
+
+/* 顶部操作栏 - 现代简约设计 */
+.top-bar {
+  display: flex;
+  justify-content: space-between;
+  padding: 24rpx 24rpx;
+  background: #ffffff;
+  border-radius: 0 0 32rpx 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  /* 固定高度防止抖动 */
+  height: 136rpx;
+  min-height: 136rpx;
+  max-height: 136rpx;
+  overflow: hidden;
+  box-sizing: border-box;
+  /* 硬件加速优化 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+.btn-entry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 16rpx;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  border-radius: 24rpx;
+  color: #ffffff;
+  font-size: 24rpx;
+  font-weight: 700;
+  flex: 1;
+  margin: 0 8rpx;
+  box-shadow: 0 8rpx 24rpx rgba(59, 130, 246, 0.35);
+  /* 固定高度防止内容撑开 */
+  height: 88rpx;
+  min-height: 88rpx;
+  max-height: 88rpx;
+  box-sizing: border-box;
+  /* 禁用默认触摸行为 */
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* 硬件加速 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  /* 字体渲染优化 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  /* 增加边框提升层次感 */
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-entry .icon {
+  font-size: 40rpx;
+  margin-bottom: 12rpx;
+  /* 图标渲染优化 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}
+
+/* 筛选排序栏 */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  background-color: #ffffff;
+  margin: 0 24rpx 24rpx;
+  border-radius: 20rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+.sort-toggle {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 24rpx;
+  background-color: #f1f5f9;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  color: #475569;
+  margin-right: 20rpx;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+.sort-toggle .arrow {
+  font-size: 20rpx;
+  margin-left: 12rpx;
+  color: #3b82f6;
+}
+
+.search-box {
+  flex: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 16rpx 24rpx;
+  background-color: #f1f5f9;
+  border-radius: 12rpx;
+  font-size: 26rpx;
+  border: 2rpx solid transparent;
+  transition: all 0.2s ease;
+}
+
+.search-input:focus {
+  border-color: #3b82f6;
+  background-color: #ffffff;
+}
+
+/* 搜索框容器 - 支持清除按钮定位 */
+.search-box {
+  flex: 1;
+  position: relative;
+}
+
+/* 清除按钮 */
+.search-clear {
+  position: absolute;
+  right: 16rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36rpx;
+  height: 36rpx;
+  background: #94a3b8;
+  color: #fff;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 32rpx;
+  font-size: 28rpx;
+  font-weight: bold;
+  z-index: 10;
+}
+
+/* 搜索状态提示 */
+.search-tip {
+  padding: 16rpx 32rpx;
+  background: #f1f5f9;
+  color: #64748b;
+  font-size: 26rpx;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 24rpx 16rpx;
+  border-radius: 12rpx;
+}
+
+.search-tip-count {
+  color: #3b82f6;
+  font-weight: 500;
+}
+.sort-menu {
+  position: absolute;
+  top: 240rpx;
+  left: 32rpx;
+  background-color: #ffffff;
+  border-radius: 16rpx;
+  box-shadow: 0 8rpx 32rpx rgba(0, 0, 0, 0.12);
+  z-index: 100;
+  overflow: hidden;
+  border: 1rpx solid #e2e8f0;
+}
+
+.sort-item {
+  padding: 28rpx 40rpx;
+  font-size: 28rpx;
+  color: #475569;
+  border-bottom: 1rpx solid #f1f5f9;
+  transition: all 0.2s ease;
+}
+
+.sort-item:last-child {
+  border-bottom: none;
+}
+
+.sort-item.active {
+  color: #6366f1;
+  background-color: rgba(99, 102, 241, 0.08);
+  font-weight: 500;
+}
+
+.sort-item:active {
+  background-color: #f8fafc;
+}
+
+/* 商品列表 */
+.goods-list {
+  padding: 0 24rpx;
+  padding-bottom: 16rpx;
+}
+
+.goods-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 28rpx 32rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  border: 1rpx solid rgba(226, 232, 240, 0.6);
+  transition: all 0.2s ease;
+}
+
+.goods-item:active {
+  transform: translateY(-2rpx);
+  box-shadow: 0 8rpx 24rpx rgba(0, 0, 0, 0.08);
+}
+
+/* 库存预警 - 商品项整体样式 */
+.goods-item.stock-warning {
+  border: 2rpx solid #fecaca;
+  background-color: #fef2f2;
+}
+
+/* 库存预警 - 文字样式 */
+.stock-warning-text {
+  color: #ef4444 !important;
+}
+
+/* 警示图标 */
+.warning-icon {
+  font-size: 24rpx;
+  margin-left: 8rpx;
+  color: #ef4444;
+}
+
+.goods-info {
+  flex: 1;
+}
+
+.goods-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12rpx;
+}
+
+.goods-code {
+  font-size: 22rpx;
+  color: #94a3b8;
+  margin-bottom: 8rpx;
+  font-family: monospace;
+}
+
+.goods-location {
+  display: inline-flex;
+  align-items: center;
+  font-size: 22rpx;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 6rpx 16rpx;
+  border-radius: 8rpx;
+}
+
+.goods-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12rpx;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.stat-label {
+  font-size: 22rpx;
+  color: #94a3b8;
+}
+
+.stat-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.stat-value.price {
+  color: #3b82f6;
+}
+
+.stat-value.stock-warning {
+  color: #ef4444;
+}
+
+/* 库存标签 */
+.stock-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 6rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 22rpx;
+  font-weight: 500;
+}
+
+.stock-tag.normal {
+  background-color: rgba(16, 185, 129, 0.1);
+  color: #10b981;
+}
+
+.stock-tag.warning {
+  background-color: rgba(245, 158, 11, 0.1);
+  color: #f59e0b;
+}
+
+.stock-tag.danger {
+  background-color: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 40rpx;
+}
+
+.empty-state text {
+  color: #94a3b8;
+  font-size: 28rpx;
+}
+
+/* 加载更多 */
+.load-more {
+  text-align: center;
+  padding: 40rpx;
+  color: #94a3b8;
+  font-size: 26rpx;
+}
+
+/* 底部安全间距 */
+.bottom-safe-area {
+  height: calc(120rpx + env(safe-area-inset-bottom));
+  min-height: 120rpx;
+}
+
+/* 底部固定出库记录按钮容器 */
+.bottom-bar-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background: #ffffff;
+  border-radius: 32rpx 32rpx 0 0;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+  z-index: 100;
+  box-sizing: border-box;
+}
+
+/* 出库记录按钮 - 与顶部按钮样式统一 */
+.btn-record-fixed {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 0;
+  background: linear-gradient(135deg, #3b82f6, #60a5fa);
+  border-radius: 24rpx;
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: 700;
+  box-shadow: 0 8rpx 24rpx rgba(59, 130, 246, 0.35);
+  /* 固定高度防止内容撑开 */
+  height: 88rpx;
+  min-height: 88rpx;
+  max-height: 88rpx;
+  box-sizing: border-box;
+  /* 禁用默认触摸行为 */
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  /* 硬件加速 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+  /* 字体渲染优化 */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+  /* 增加边框提升层次感 */
+  border: 1rpx solid rgba(255, 255, 255, 0.2);
+  gap: 16rpx;
+}
+
+.btn-record-fixed .icon {
+  font-size: 32rpx;
+  /* 图标渲染优化 */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  will-change: transform;
+}

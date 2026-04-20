@@ -1,0 +1,392 @@
+<!-- pages/admin/admin.wxml -->
+<!-- ============================================================ -->
+<!-- 管理员账号管理页 - 严格三层权限控制系统模板                  -->
+<!-- ============================================================ -->
+<!-- 权限体系：                                                    -->
+<!--   1. 主管管理员（sh1112）：最高权限，可操作所有按钮（不可操作自身） -->
+<!--   2. 普通管理员（cs123123）：仅可使用顶部按钮，行内按钮全部灰化禁用  -->
+<!--   3. 员工：禁止进入，显示无权限拦截页                           -->
+<!-- ============================================================ -->
+
+<view class="container">
+
+  <!-- ========== 员工无权限拦截页（showAccessDenied 为 true 时显示） ========== -->
+  <view class="access-denied-card" wx:if="{{showAccessDenied}}">
+    <view class="denied-icon">🔒</view>
+    <view class="denied-title">无权限访问</view>
+    <view class="denied-desc">员工账号无权进入管理员页面，请联系主管管理员获取权限。</view>
+    <view class="denied-desc">如需帮助，请联系管理员：{{'sh1112'}}</view>
+    <button class="back-login-btn" bindtap="_redirectToLogin">返回登录页</button>
+  </view>
+
+  <!-- ========== 身份加载中提示（currentUser 为空时显示） ========== -->
+  <view class="access-denied-card" wx:elif="{{!currentUser && !showAccessDenied}}">
+    <view class="denied-icon">⏳</view>
+    <view class="denied-title">正在验证身份...</view>
+    <view class="denied-desc">请稍候，系统正在确认您的身份信息。</view>
+  </view>
+
+  <!-- ========== 正常管理页面内容（非员工时显示） ========== -->
+  <block wx:if="{{!showAccessDenied && currentUser}}">
+
+    <!-- ===== 当前用户身份信息栏 ===== -->
+    <view class="user-info-bar {{isMaster ? 'bar-master' : 'bar-admin'}}">
+      <view class="user-info-left">
+        <text class="user-info-text">
+          <text wx:if="{{isMaster}}">👑 主管管理员</text>
+          <text wx:elif="{{isAdmin}}">🛡 普通管理员</text>
+        </text>
+        <text class="user-account-text">账号：{{currentUser.username}}</text>
+      </view>
+      <view class="logout-admin-btn" bindtap="handleAdminLogout">
+        <text>退出登录</text>
+      </view>
+    </view>
+
+    <!-- ===== 权限提示条 ===== -->
+    <!-- 主管管理员看到的提示 -->
+    <view class="permission-tip tip-master" wx:if="{{isMaster}}">
+      <text class="tip-text">✅ 您是主管管理员，拥有所有管理权限（不可操作自身账号）</text>
+    </view>
+    <!-- 普通管理员看到的提示 -->
+    <view class="permission-tip tip-admin" wx:elif="{{isAdmin}}">
+      <text class="tip-text">⚠️ 您是普通管理员，可创建账号和修改密码，行内操作按钮由主管管理员控制</text>
+    </view>
+
+    <!-- ===== 功能按钮区域 ===== -->
+    <!-- 【第一道防线】通过 disabled 属性控制 UI 层面的按钮可用性 -->
+    <!-- canUseTopButtons = true 时（主管 + 管理员）按钮可点击 -->
+    <!-- canUseTopButtons = false 时按钮灰化禁用 -->
+    <view class="button-container">
+      <button
+        class="function-btn {{canUseTopButtons ? '' : 'btn-disabled'}}"
+        bindtap="showCreateForm"
+        disabled="{{!canUseTopButtons}}">
+        创建账号
+      </button>
+      <button
+        class="function-btn {{canUseTopButtons ? '' : 'btn-disabled'}}"
+        bindtap="showUpdateForm"
+        disabled="{{!canUseTopButtons}}">
+        修改密码
+      </button>
+      <button
+        class="function-btn {{canUseTopButtons ? '' : 'btn-disabled'}}"
+        bindtap="showResetForm"
+        disabled="{{!canUseTopButtons}}">
+        重置密码
+      </button>
+    </view>
+
+    <!-- ===== 账号管理列表 ===== -->
+    <view class="form-card" style="margin-top: 24rpx;">
+      <view class="form-title">账号管理</view>
+
+      <!-- 列表内容 -->
+      <view class="account-list" wx:if="{{accountList.length > 0}}">
+        <view
+          class="account-item"
+          wx:for="{{accountList}}"
+          wx:key="username">
+
+          <!-- 账号信息 -->
+          <view class="account-info">
+            <text class="account-username">{{item.username}}</text>
+            <text class="account-name">{{item.name}}</text>
+            <!-- 角色标签 -->
+            <text class="account-role role-admin" wx:if="{{item.role === 'admin'}}">管理员</text>
+            <text class="account-role role-user" wx:elif="{{item.role === 'normal'}}">员工</text>
+            <!-- 主管管理员标记 -->
+            <text class="account-master-badge" wx:if="{{item.isMaster}}">👑 主管管理员</text>
+            <!-- 当前登录用户标记 -->
+            <text class="account-self-badge" wx:if="{{item.username === currentUser.username}}">（当前账号）</text>
+          </view>
+
+          <!-- 行内操作按钮 -->
+          <!-- 【修复】disabled 只绑定 item.btnDisabled，去掉了错误的 || item.isMaster -->
+          <!-- 之前 || item.isMaster 导致所有非主管行也被误禁用 -->
+          <view class="account-actions">
+            <!-- 删除按钮：仅 btnDisabled 为 true 时禁用（主管 + 自身 = 禁用） -->
+            <button
+              class="action-btn delete {{item.btnDisabled ? 'btn-disabled' : ''}}"
+              bindtap="deleteAccount"
+              data-username="{{item.username}}"
+              data-ismaster="{{item.isMaster}}"
+              disabled="{{item.btnDisabled}}">
+              删除
+            </button>
+            <!-- 变更角色按钮：仅 btnDisabled 为 true 时禁用 -->
+            <button
+              class="action-btn set-role {{item.btnDisabled ? 'btn-disabled' : ''}}"
+              bindtap="setAdminRole"
+              data-username="{{item.username}}"
+              data-role="{{item.role}}"
+              data-ismaster="{{item.isMaster}}"
+              disabled="{{item.btnDisabled}}">
+              {{item.role === 'admin' ? '取消管理员' : '设为管理员'}}
+            </button>
+            <!-- 设为主管理员按钮：仅 btnDisabled 为 true 时禁用 -->
+            <button
+              class="action-btn set-master {{item.btnDisabled ? 'btn-disabled' : ''}}"
+              bindtap="setMasterAccount"
+              data-username="{{item.username}}"
+              data-ismaster="{{item.isMaster}}"
+              disabled="{{item.btnDisabled}}">
+              {{item.isMaster ? '当前主管' : '设为主管理员'}}
+            </button>
+          </view>
+        </view>
+      </view>
+
+      <!-- 空列表提示 -->
+      <view class="empty-list" wx:else>
+        <text>暂无账号，请创建</text>
+      </view>
+    </view>
+
+    <!-- ===== 创建账号表单 ===== -->
+    <view class="form-card" style="margin-top: 24rpx;" wx:if="{{showCreateFormFlag}}">
+      <view class="form-title">创建账号</view>
+
+      <view class="form-item">
+        <text class="label">账号</text>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="请输入员工账号（字母 + 数字，6-12 位）"
+          value="{{formData.username}}"
+          bindinput="onInput"
+          data-field="username"
+          maxlength="12" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请设置登录密码（8-16 位，字母 + 数字组合）"
+          value="{{formData.password}}"
+          bindinput="onInput"
+          data-field="password"
+          maxlength="16" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">确认密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请再次输入密码"
+          value="{{formData.confirmPassword}}"
+          bindinput="onInput"
+          data-field="confirmPassword"
+          maxlength="16" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">员工姓名</text>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="请输入员工真实姓名"
+          value="{{formData.name}}"
+          bindinput="onInput"
+          data-field="name"
+          maxlength="20" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">权限角色</text>
+        <view class="role-selector">
+          <view
+            class="role-option {{formData.role === 'normal' ? 'selected' : ''}}"
+            bindtap="selectRole"
+            data-role="normal">
+            员工
+          </view>
+          <view
+            class="role-option {{formData.role === 'admin' ? 'selected' : ''}}"
+            bindtap="selectRole"
+            data-role="admin">
+            管理员
+          </view>
+        </view>
+      </view>
+
+      <!-- 安全提醒 -->
+      <view class="security-alert">
+        <text class="alert-icon">⚠</text>
+        <text class="alert-title">安全提醒</text>
+        <text class="alert-content">仅系统管理员可创建账号</text>
+        <text class="alert-content">密码将加密存储，不可查看原始密码</text>
+        <text class="alert-content">异常操作将被系统记录</text>
+        <text class="alert-content">请勿泄露管理员权限</text>
+      </view>
+
+      <!-- 提交按钮 -->
+      <button
+        class="submit-btn"
+        bindtap="submitForm"
+        disabled="{{submitting}}">
+        {{submitting ? '提交中...' : '创建账号'}}
+      </button>
+    </view>
+
+    <!-- ===== 修改密码表单 ===== -->
+    <view class="form-card" style="margin-top: 24rpx;" wx:if="{{showUpdateFormFlag}}">
+      <view class="form-title">修改密码</view>
+
+      <view class="form-item">
+        <text class="label">账号</text>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="请输入要修改密码的账号"
+          value="{{passwordForm.username}}"
+          bindinput="onPasswordInput"
+          data-field="username"
+          maxlength="12" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">原密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请输入原密码"
+          value="{{passwordForm.oldPassword}}"
+          bindinput="onPasswordInput"
+          data-field="oldPassword"
+          maxlength="16" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">新密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请设置新密码（8-16 位，字母 + 数字组合）"
+          value="{{passwordForm.newPassword}}"
+          bindinput="onPasswordInput"
+          data-field="newPassword"
+          maxlength="16" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">确认新密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请再次输入新密码"
+          value="{{passwordForm.confirmPassword}}"
+          bindinput="onPasswordInput"
+          data-field="confirmPassword"
+          maxlength="16" />
+      </view>
+
+      <button
+        class="submit-btn"
+        bindtap="updatePassword"
+        disabled="{{submitting}}">
+        {{submitting ? '修改中...' : '修改密码'}}
+      </button>
+    </view>
+
+    <!-- ===== 重置密码表单 ===== -->
+    <view class="form-card" style="margin-top: 24rpx;" wx:if="{{showResetFormFlag}}">
+      <view class="form-title">重置密码（管理员）</view>
+
+      <view class="form-item">
+        <text class="label">账号</text>
+        <input
+          class="input-field"
+          type="text"
+          placeholder="请输入要重置密码的账号"
+          value="{{resetForm.username}}"
+          bindinput="onResetInput"
+          data-field="username"
+          maxlength="12" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">新密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请设置新密码（8-16 位，字母 + 数字组合）"
+          value="{{resetForm.newPassword}}"
+          bindinput="onResetInput"
+          data-field="newPassword"
+          maxlength="16" />
+      </view>
+
+      <view class="form-item">
+        <text class="label">确认新密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请再次输入新密码"
+          value="{{resetForm.confirmPassword}}"
+          bindinput="onResetInput"
+          data-field="confirmPassword"
+          maxlength="16" />
+      </view>
+
+      <button
+        class="submit-btn"
+        bindtap="resetPassword"
+        disabled="{{submitting}}">
+        {{submitting ? '重置中...' : '重置密码'}}
+      </button>
+    </view>
+
+  </block>
+
+  <!-- ========== 密码验证弹窗 - 设置主管理员 ========== -->
+  <view class="modal-mask" wx:if="{{showPasswordModal}}">
+    <view class="modal-content">
+      <view class="modal-title">密码验证</view>
+      <view class="form-item">
+        <text class="label">请输入主管管理员登录密码</text>
+        <input
+          class="input-field"
+          type="password"
+          placeholder="请输入密码"
+          value="{{passwordModal.password}}"
+          bindinput="onPasswordModalInput"
+          data-field="password"
+          maxlength="16" />
+      </view>
+      <view class="modal-buttons">
+        <button class="modal-btn cancel" bindtap="closePasswordModal">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmPasswordModal">确认</button>
+      </view>
+    </view>
+  </view>
+
+  <!-- ========== 选择新主管理员弹窗 ========== -->
+  <view class="modal-mask" wx:if="{{showSelectMasterModal}}">
+    <view class="modal-content">
+      <view class="modal-title">选择新主管管理员</view>
+      <view class="form-item">
+        <text class="label">请选择下一位主管管理员</text>
+        <view class="admin-list">
+          <view
+            class="admin-item {{selectedNewMaster === item.username ? 'selected' : ''}}"
+            wx:for="{{adminList}}"
+            wx:key="{{item.username}}"
+            bindtap="selectNewMaster"
+            data-username="{{item.username}}">
+            <text>{{item.name}} ({{item.username}})</text>
+          </view>
+        </view>
+      </view>
+      <view class="modal-buttons">
+        <button class="modal-btn cancel" bindtap="closeSelectMasterModal">取消</button>
+        <button class="modal-btn confirm" bindtap="confirmSelectMasterModal" disabled="{{!selectedNewMaster}}">确认</button>
+      </view>
+    </view>
+  </view>
+
+</view>

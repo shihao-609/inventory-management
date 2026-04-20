@@ -1,0 +1,117 @@
+<!-- 首页 - 库存管理主页面
+  三个入口：入库扫描、物品查询、手动新增
+-->
+<view class="container">
+  <!-- 用户信息栏 - 显示当前登录用户 + 退出按钮 -->
+  <view class="user-bar">
+    <view class="user-info">
+      <text class="user-icon">👤</text>
+      <text class="user-name">{{currentUser.name || currentUser.username || '用户'}}</text>
+    </view>
+    <view class="logout-btn" bindtap="handleLogout">
+      <text class="logout-icon">↪</text>
+      <text>退出</text>
+    </view>
+  </view>
+
+  <!-- 顶部操作栏 - 三个入口按钮 -->
+  <view class="top-bar" id="topBar" catchtouchmove="preventScroll">
+    <view class="btn-entry" bindtap="goToStockIn">
+      <text class="icon">📥</text>
+      <text>入库扫描</text>
+    </view>
+    <view class="btn-entry" bindtap="goToQuery">
+      <text class="icon">🔍</text>
+      <text>物品查询</text>
+    </view>
+    <view class="btn-entry" bindtap="goToAdd">
+      <text class="icon">✚</text>
+      <text>手动入库</text>
+    </view>
+  </view>
+
+  <!-- 搜索栏 -->
+  <view class="filter-bar">
+    <view class="search-box">
+      <input 
+        class="search-input" 
+        placeholder="搜索商品名称" 
+        bindinput="onSearch"
+        value="{{searchKey}}"
+        confirm-type="search"
+      />
+      <view class="search-clear" wx:if="{{searchKey}}" bindtap="clearSearch">×</view>
+    </view>
+  </view>
+
+  <!-- 搜索状态提示 -->
+  <view class="search-tip" wx:if="{{searchMode && searchKey && !loading}}">
+    <text>搜索: "{{searchKey}}"</text>
+    <text class="search-tip-count">{{goodsList.length}} 个结果</text>
+  </view>
+  <view class="search-tip" wx:if="{{searchLoading}}">
+    <text>搜索中...</text>
+  </view>
+
+  <!-- 商品列表 -->
+  <view class="goods-list">
+    <block wx:if="{{goodsList.length > 0}}">
+      <view 
+        class="goods-item {{(item.stock || 0) < 10 ? 'stock-warning' : ''}}"
+        wx:for="{{goodsList}}"
+        wx:key="_id"
+        bindtap="goToDetail"
+        data-id="{{item._id}}"
+      >
+        <view class="goods-info">
+          <view class="goods-name">{{item.name}}</view>
+          <view class="goods-code" wx:if="{{item.itemCode}}">编号: {{item.itemCode}}</view>
+          <view class="goods-location">位置: {{item.location || '-'}}</view>
+        </view>
+        <view class="goods-stats">
+          <!-- 库存警示：库存<10时红色显示 -->
+          <view class="stat-item">
+            <text class="stat-label">库存</text>
+            <text class="stat-value {{(item.stock || 0) < 10 ? 'stock-warning-text' : ''}}">{{item.stock || 0}}</text>
+            <!-- 库存不足警示图标 -->
+            <text class="warning-icon" wx:if="{{(item.stock || 0) < 10}}">⚠</text>
+          </view>
+          <view class="stat-item">
+            <text class="stat-label">售价</text>
+            <text class="stat-value price">¥{{item.price || 0}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="empty-state" wx:if="{{!loading}}">
+        <text>暂无商品数据</text>
+        <view class="empty-hint">点击上方按钮添加商品</view>
+      </view>
+    </block>
+  </view>
+
+  <!-- 加载状态 -->
+  <view class="loading-more" wx:if="{{loadingMore}}">
+    <text>加载中...</text>
+  </view>
+  <view class="no-more" wx:if="{{!hasMore && goodsList.length > 0}}">
+    <text>没有更多了</text>
+  </view>
+
+  <!-- 加载中 -->
+  <view class="loading" wx:if="{{loading}}">
+    <text>加载中...</text>
+  </view>
+
+  <!-- 底部安全间距，防止内容被固定按钮遮挡 -->
+  <view class="bottom-safe-area"></view>
+</view>
+
+<!-- 底部固定出库记录按钮 -->
+<view class="bottom-bar-fixed">
+  <view class="btn-record-fixed" bindtap="goToOutRecords">
+    <text class="icon">📤</text>
+    <text>出库记录</text>
+  </view>
+</view>

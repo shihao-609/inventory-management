@@ -1,0 +1,419 @@
+/* 详情页样式 - 现代简洁风格 */
+.container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 24rpx;
+  padding-bottom: 140rpx;
+}
+
+/* 加载中 */
+.loading {
+  text-align: center;
+  padding: 120rpx;
+  color: #94a3b8;
+  font-size: 28rpx;
+}
+
+/* 详情内容 */
+.detail-content {
+  padding: 0;
+}
+
+/* 卡片通用样式 */
+.card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  border: 1rpx solid rgba(226, 232, 240, 0.6);
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 24rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+}
+
+/* 输入框样式 - 与扫码入库页面统一 */
+.input-field {
+  width: 100%;
+  padding: 24rpx;
+  background-color: #f8fafc;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  color: #1e293b;
+  box-sizing: border-box;
+  border: 2rpx solid #e2e8f0;
+  height: 88rpx;
+  line-height: 88rpx;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: #6366f1;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4rpx rgba(99, 102, 241, 0.1);
+}
+
+.input-field::placeholder {
+  color: #94a3b8;
+}
+
+/* 编辑项通用样式 */
+.edit-item {
+  display: flex;
+  flex-direction: column;
+  gap: 12rpx;
+}
+
+.edit-item .label {
+  font-size: 26rpx;
+  color: #475569;
+  font-weight: 500;
+}
+
+.edit-item-inline {
+  flex: 1;
+}
+
+/* 商品信息卡片 */
+.goods-info-card {
+  padding: 32rpx;
+}
+
+.goods-header {
+  margin-bottom: 20rpx;
+}
+
+.goods-name {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #1e293b;
+  display: block;
+  margin-bottom: 12rpx;
+}
+
+.goods-name-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.goods-name-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.goods-code-section {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.goods-code-section .label {
+  font-size: 24rpx;
+  color: #64748b;
+  margin-bottom: 8rpx;
+}
+
+.goods-code-section .value {
+  font-size: 26rpx;
+  color: #1e293b;
+  font-family: monospace;
+  font-weight: 500;
+}
+
+/* 库存卡片 */
+.stock-card {
+  padding: 32rpx;
+}
+
+.stock-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stock-main {
+  display: flex;
+  align-items: baseline;
+}
+
+.stock-num {
+  font-size: 72rpx;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.stock-num.stock-warning {
+  color: #ef4444;
+}
+
+.stock-unit {
+  font-size: 28rpx;
+  color: #64748b;
+  margin-left: 12rpx;
+}
+
+.stock-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.action-btn {
+  padding: 16rpx 32rpx;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.action-btn:first-child {
+  background: linear-gradient(135deg, #10b981, #34d399);
+  color: #ffffff;
+  box-shadow: 0 4rpx 12rpx rgba(16, 185, 129, 0.3);
+}
+
+.action-btn:first-child:active {
+  transform: scale(0.98);
+}
+
+.action-btn:last-child {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #ffffff;
+  box-shadow: 0 4rpx 12rpx rgba(239, 68, 68, 0.3);
+}
+
+.action-btn:last-child:active {
+  transform: scale(0.98);
+}
+
+/* 库存编辑 */
+.stock-edit {
+  display: flex;
+  flex-direction: column;
+  gap: 16rpx;
+}
+
+.stock-edit .label {
+  display: block;
+  font-size: 26rpx;
+  color: #475569;
+  margin-bottom: 8rpx;
+  font-weight: 500;
+}
+
+.hint-text {
+  display: block;
+  font-size: 24rpx;
+  color: #64748b;
+  margin-top: 8rpx;
+}
+
+/* 统一操作按钮样式 - 与扫码入库页面底部按钮一致 */
+.btn-action {
+  width: 100%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border: none;
+  border-radius: 32rpx;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(99, 102, 241, 0.3);
+  min-height: 72rpx;
+  line-height: 72rpx;
+  transition: all 0.2s ease;
+}
+
+.btn-action:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(99, 102, 241, 0.3);
+}
+
+/* 行内保存按钮 - 缩小尺寸版本 */
+.btn-inline {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 16rpx 32rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.3);
+  min-height: 64rpx;
+  line-height: 64rpx;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+
+.btn-inline:active {
+  transform: scale(0.98);
+}
+
+/* 信息卡片 */
+.info-card .info-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f1f5f9;
+}
+
+.info-item:last-child {
+  border-bottom: none;
+}
+
+.info-label {
+  font-size: 28rpx;
+  color: #64748b;
+}
+
+.info-value {
+  display: flex;
+  align-items: center;
+}
+
+.info-value text {
+  font-size: 28rpx;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.info-value .price {
+  color: #6366f1;
+  font-weight: 700;
+}
+
+.edit-icon {
+  font-size: 24rpx;
+  color: #6366f1;
+  margin-left: 16rpx;
+}
+
+.info-edit {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex: 1;
+}
+
+.info-edit .edit-item-inline {
+  flex: 1;
+  min-width: 0;
+}
+
+.info-edit .input-field {
+  width: 100%;
+}
+
+/* 文本颜色 */
+.text-gray {
+  color: #94a3b8 !important;
+}
+
+.text-danger {
+  color: #ef4444 !important;
+}
+
+/* 位置选择样式 */
+.position-value {
+  font-size: 28rpx;
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.position-value.has-value {
+  color: #1e293b;
+  font-weight: 500;
+  font-family: monospace;
+}
+
+/* 按钮组 */
+.btn-group {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  padding: 16rpx 24rpx;
+  padding-bottom: calc(16rpx + env(safe-area-inset-bottom));
+  background-color: #ffffff;
+  box-shadow: 0 -4rpx 20rpx rgba(0, 0, 0, 0.06);
+  gap: 16rpx;
+  z-index: 100;
+}
+
+.btn-save {
+  flex: 1;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border: none;
+  border-radius: 32rpx;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(99, 102, 241, 0.3);
+  min-height: 72rpx;
+  transition: all 0.2s ease;
+}
+
+.btn-save:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(99, 102, 241, 0.3);
+}
+
+.btn-back {
+  flex: 1;
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: none;
+  border-radius: 32rpx;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-weight: 500;
+  min-height: 72rpx;
+  transition: all 0.2s ease;
+}
+
+.btn-back:active {
+  background-color: #e2e8f0;
+}
+
+.btn-delete {
+  flex: 1;
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  color: #ffffff;
+  border: none;
+  border-radius: 32rpx;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(239, 68, 68, 0.3);
+  min-height: 72rpx;
+  transition: all 0.2s ease;
+}
+
+.btn-delete:active {
+  transform: scale(0.98);
+  box-shadow: 0 2rpx 8rpx rgba(239, 68, 68, 0.3);
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 120rpx 0;
+}
+
+.empty-state text {
+  font-size: 28rpx;
+  color: #94a3b8;
+}

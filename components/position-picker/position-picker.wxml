@@ -1,0 +1,71 @@
+<!-- components/position-picker/position-picker.wxml -->
+<view class="position-picker-mask {{show ? 'show' : ''}}" bindtap="onCancel">
+  <view class="position-picker-content" catchtap="">
+
+    <!-- 标题 -->
+    <view class="picker-header">
+      <text class="picker-title">选择位置</text>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="loading-view" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+
+    <!-- 选择区域 -->
+    <view class="picker-body" wx:else>
+
+      <!-- 多列联动选择器 -->
+      <picker-view
+        class="picker-view"
+        indicator-class="picker-indicator"
+        value="{{pickerValue}}"
+        bindchange="onPickerChange"
+        bindpickstart="onPickStart"
+        bindpickend="onPickEnd"
+      >
+        <!-- 楼层列 -->
+        <picker-view-column>
+          <view class="picker-column-item" wx:for="{{floors}}" wx:key="index">
+            {{item.floorName}}
+          </view>
+        </picker-view-column>
+
+        <!-- 类型列 -->
+        <picker-view-column>
+          <view class="picker-column-item" wx:for="{{types}}" wx:key="index">
+            {{item.typeName}}
+          </view>
+        </picker-view-column>
+
+        <!-- 编号列 -->
+        <picker-view-column>
+          <view class="picker-column-item" wx:for="{{numbers}}" wx:key="index">
+            {{item}}
+          </view>
+        </picker-view-column>
+
+        <!-- 层列（有层时显示） -->
+        <picker-view-column wx:if="{{showLayerPicker}}">
+          <view class="picker-column-item" wx:for="{{layers}}" wx:key="index">
+            {{item}}
+          </view>
+        </picker-view-column>
+      </picker-view>
+
+    </view>
+
+    <!-- 位置预览 -->
+    <view class="preview-row">
+      <text class="preview-label">位置</text>
+      <text class="preview-value {{previewCode ? 'active' : ''}}">{{previewCode || '—'}}</text>
+    </view>
+
+    <!-- 按钮 -->
+    <view class="picker-buttons">
+      <button class="btn-cancel" bindtap="onCancel">取消</button>
+      <button class="btn-confirm" bindtap="onConfirm">确定</button>
+    </view>
+
+  </view>
+</view>

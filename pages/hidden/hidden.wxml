@@ -1,0 +1,124 @@
+<view class="container">
+  <!-- 验证状态 -->
+  <view wx:if="{{!isVerified}}">
+    <view class="loading">验证中...</view>
+  </view>
+
+  <!-- 已验证：显示内容 -->
+  <view class="content" wx:if="{{isVerified}}">
+    <!-- 操作按钮区域 -->
+    <view class="action-bar">
+      <view class="action-btn" bindtap="exportData">
+        <text>导出数据</text>
+      </view>
+      <view class="action-btn" bindtap="showPasswordModal">
+        <text>修改密码</text>
+      </view>
+      <view class="action-btn danger" bindtap="clearAllData">
+        <text>清除数据</text>
+      </view>
+      <view class="action-btn" bindtap="testCloudFunction">
+        <text>测试云函数</text>
+      </view>
+    </view>
+
+    <!-- 商品列表 -->
+    <view class="goods-list">
+      <view class="list-header">
+        <text class="title">商品列表（含进价）</text>
+        <text class="count">共 {{goodsList.length}} 件</text>
+      </view>
+      
+      <block wx:if="{{goodsList.length > 0}}">
+        <view class="goods-item" wx:for="{{goodsList}}" wx:key="_id">
+          <view class="goods-main">
+            <view class="goods-name">{{item.name}}</view>
+            <!-- 物品编号 - 新增显示 -->
+            <view class="goods-code" wx:if="{{item.itemCode}}">编号: {{item.itemCode}}</view>
+          </view>
+          <view class="goods-details">
+            <view class="detail-row">
+              <text class="label">位置:</text>
+              <text class="value">{{item.location || '-'}}</text>
+            </view>
+            <view class="detail-row">
+              <text class="label">库存:</text>
+              <text class="value">{{item.stock || 0}}</text>
+            </view>
+            <view class="detail-row">
+              <text class="label">售价:</text>
+              <text class="value price">¥{{item.price || 0}}</text>
+            </view>
+            <view class="detail-row">
+              <text class="label">进价:</text>
+              <text class="value cost" bindtap="showCostEdit" data-goods="{{item}}">
+                ¥{{item.costPrice || 0}} ✎
+              </text>
+            </view>
+            <view class="detail-row">
+              <text class="label">更新:</text>
+              <text class="value text-gray">{{item.updateTime || '-'}}</text>
+            </view>
+          </view>
+        </view>
+      </block>
+      
+      <block wx:else>
+        <view class="empty-state" wx:if="{{!loading}}">
+          <text>暂无商品数据</text>
+        </view>
+      </block>
+    </view>
+
+    <!-- 加载中 -->
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+
+  <!-- 进价编辑弹窗 -->
+  <view class="modal-mask" wx:if="{{showCostModal}}" bindtap="closeCostModal"></view>
+  <view class="modal-content" wx:if="{{showCostModal}}">
+    <view class="modal-header">修改进价</view>
+    <view class="modal-body">
+      <input 
+        class="modal-input" 
+        type="digit"
+        placeholder="请输入进价"
+        value="{{editingCost}}"
+        bindinput="onCostInput"
+        focus="{{showCostModal}}"
+      />
+    </view>
+    <view class="modal-footer">
+      <view class="modal-btn cancel" bindtap="closeCostModal">取消</view>
+      <view class="modal-btn confirm" bindtap="saveCost">保存</view>
+    </view>
+  </view>
+
+  <!-- 修改密码弹窗 -->
+  <view class="modal-mask" wx:if="{{showPasswordModal}}" bindtap="closePasswordModal"></view>
+  <view class="modal-content" wx:if="{{showPasswordModal}}">
+    <view class="modal-header">修改访问密码</view>
+    <view class="modal-body">
+      <input 
+        class="modal-input" 
+        password
+        placeholder="请输入新密码（至少6位）"
+        value="{{newPassword}}"
+        bindinput="onNewPasswordInput"
+      />
+      <input 
+        class="modal-input" 
+        password
+        placeholder="请确认新密码"
+        value="{{confirmPassword}}"
+        bindinput="onConfirmPasswordInput"
+      />
+    </view>
+    <view class="modal-footer">
+      <view class="modal-btn cancel" bindtap="closePasswordModal">取消</view>
+      <view class="modal-btn confirm" bindtap="saveNewPassword">保存</view>
+    </view>
+  </view>
+</view>

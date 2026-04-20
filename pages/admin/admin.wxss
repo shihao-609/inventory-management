@@ -1,0 +1,539 @@
+/* pages/admin/admin.wxss */
+/* ============================================================ */
+/* 管理员账号管理页 - 严格三层权限控制系统样式                      */
+/* ============================================================ */
+
+/* ========== 页面容器 ========== */
+.container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+/* ========== 员工无权限拦截页样式 ========== */
+.access-denied-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 80rpx 40rpx;
+  margin-top: 200rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  border: 2rpx solid #fecaca;
+}
+
+.denied-icon {
+  font-size: 96rpx;
+  margin-bottom: 32rpx;
+}
+
+.denied-title {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #dc2626;
+  margin-bottom: 24rpx;
+}
+
+.denied-desc {
+  font-size: 26rpx;
+  color: #6b7280;
+  margin-bottom: 12rpx;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.back-login-btn {
+  margin-top: 48rpx;
+  width: 320rpx;
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: #ffffff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 24rpx 0;
+  font-size: 30rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(239, 68, 68, 0.3);
+}
+
+/* ========== 当前用户身份信息栏 ========== */
+.user-info-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24rpx 32rpx;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+  box-shadow: 0 2rpx 12rpx rgba(0, 0, 0, 0.04);
+}
+
+/* 主管管理员信息栏 - 金色主题 */
+.bar-master {
+  background: linear-gradient(135deg, #fef3c7, #fde68a);
+  border: 2rpx solid #f59e0b;
+}
+
+/* 普通管理员信息栏 - 蓝色主题 */
+.bar-admin {
+  background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+  border: 2rpx solid #3b82f6;
+}
+
+.user-info-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.user-info-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.user-account-text {
+  font-size: 24rpx;
+  color: #64748b;
+}
+
+.logout-admin-btn {
+  padding: 12rpx 24rpx;
+  border-radius: 8rpx;
+  background-color: rgba(239, 68, 68, 0.15);
+  border: 1rpx solid #ef4444;
+}
+
+.logout-admin-btn text {
+  font-size: 24rpx;
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* ========== 权限提示条 ========== */
+.permission-tip {
+  padding: 20rpx 28rpx;
+  border-radius: 12rpx;
+  margin-bottom: 20rpx;
+}
+
+.tip-master {
+  background-color: #f0fdf4;
+  border: 2rpx solid #86efac;
+}
+
+.tip-admin {
+  background-color: #fffbeb;
+  border: 2rpx solid #fcd34d;
+}
+
+.tip-text {
+  font-size: 24rpx;
+  color: #475569;
+  line-height: 1.6;
+}
+
+/* ========== 功能按钮区域 ========== */
+.button-container {
+  display: flex;
+  gap: 16rpx;
+  margin-bottom: 24rpx;
+}
+
+.function-btn {
+  flex: 1;
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: #ffffff;
+  border: none;
+  border-radius: 12rpx;
+  padding: 24rpx 0;
+  font-size: 28rpx;
+  font-weight: 500;
+  line-height: 40rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 12rpx rgba(59, 130, 246, 0.3);
+  transition: all 0.2s ease;
+}
+
+.function-btn:active:not([disabled]) {
+  transform: scale(0.97);
+}
+
+/* 功能按钮禁用状态 */
+.function-btn[disabled],
+.function-btn.btn-disabled {
+  background: linear-gradient(135deg, #cbd5e1, #94a3b8);
+  color: #64748b;
+  box-shadow: none;
+}
+
+/* ========== 表单卡片 ========== */
+.form-card {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  box-shadow: 0 4rpx 20rpx rgba(0, 0, 0, 0.06);
+  border: 1rpx solid rgba(226, 232, 240, 0.6);
+}
+
+.form-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+/* ========== 账号列表 ========== */
+.account-list {
+  margin-top: 16rpx;
+}
+
+.account-item {
+  display: flex;
+  flex-direction: column;
+  padding: 24rpx;
+  background-color: #f8fafc;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  border: 1rpx solid rgba(226, 232, 240, 0.6);
+  transition: all 0.2s ease;
+}
+
+.account-info {
+  margin-bottom: 16rpx;
+}
+
+.account-username {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 8rpx;
+}
+
+.account-name {
+  display: block;
+  font-size: 24rpx;
+  color: #64748b;
+  margin-bottom: 8rpx;
+}
+
+/* 角色标签 */
+.account-role {
+  display: inline-block;
+  font-size: 20rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  margin-right: 12rpx;
+  font-weight: 500;
+}
+
+.role-admin {
+  background-color: #dbeafe;
+  color: #2563eb;
+}
+
+.role-user {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* 主管管理员金色标记 */
+.account-master-badge {
+  display: inline-block;
+  font-size: 20rpx;
+  color: #b45309;
+  font-weight: 600;
+  background-color: #fef3c7;
+  padding: 4rpx 12rpx;
+  border-radius: 6rpx;
+  margin-right: 8rpx;
+}
+
+/* 当前登录用户标记 */
+.account-self-badge {
+  display: inline-block;
+  font-size: 20rpx;
+  color: #6366f1;
+  font-weight: 500;
+}
+
+/* ========== 行内操作按钮 ========== */
+.account-actions {
+  display: flex;
+  gap: 12rpx;
+}
+
+.action-btn {
+  padding: 14rpx 16rpx;
+  border: none;
+  border-radius: 8rpx;
+  font-size: 20rpx;
+  line-height: 28rpx;
+  text-align: center;
+  min-width: 90rpx;
+  flex: 1;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.action-btn:active:not([disabled]) {
+  transform: scale(0.96);
+  opacity: 0.9;
+}
+
+/* 删除按钮 - 红色 */
+.action-btn.delete {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+/* 设为主管理员按钮 - 蓝色 */
+.action-btn.set-master {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+/* 变更角色按钮 - 绿色 */
+.action-btn.set-role {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+/* 行内按钮禁用状态 - 灰化 */
+.action-btn[disabled],
+.action-btn.btn-disabled {
+  background-color: #e2e8f0 !important;
+  color: #94a3b8 !important;
+  box-shadow: none;
+  transform: none !important;
+}
+
+/* ========== 空列表提示 ========== */
+.empty-list {
+  text-align: center;
+  padding: 64rpx 0;
+  color: #94a3b8;
+  font-size: 28rpx;
+}
+
+/* ========== 表单项 ========== */
+.form-item {
+  margin-bottom: 32rpx;
+}
+
+.form-item .label {
+  display: block;
+  font-size: 28rpx;
+  color: #475569;
+  margin-bottom: 16rpx;
+  font-weight: 500;
+}
+
+.input-field {
+  width: 100%;
+  padding: 16rpx 20rpx;
+  background-color: #f8fafc;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #1e293b;
+  box-sizing: border-box;
+  height: 80rpx;
+  line-height: 80rpx;
+  transition: all 0.2s ease;
+}
+
+.input-field:focus {
+  border-color: #6366f1;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4rpx rgba(99, 102, 241, 0.1);
+}
+
+.input-field::placeholder {
+  color: #94a3b8;
+}
+
+/* ========== 角色选择器 ========== */
+.role-selector {
+  display: flex;
+  gap: 20rpx;
+}
+
+.role-option {
+  flex: 1;
+  padding: 20rpx;
+  background-color: #f8fafc;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 16rpx;
+  text-align: center;
+  font-size: 28rpx;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.role-option:active {
+  transform: scale(0.98);
+}
+
+.role-option.selected {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border-color: #6366f1;
+}
+
+/* ========== 安全提醒 ========== */
+.security-alert {
+  background-color: #fffbeb;
+  border: 2rpx solid #fcd34d;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  margin-bottom: 32rpx;
+}
+
+.alert-icon {
+  font-size: 32rpx;
+  margin-right: 8rpx;
+}
+
+.alert-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #92400e;
+  margin-bottom: 12rpx;
+}
+
+.alert-content {
+  display: block;
+  font-size: 24rpx;
+  color: #b45309;
+  margin-bottom: 8rpx;
+  line-height: 1.5;
+}
+
+/* ========== 提交按钮 ========== */
+.submit-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border: none;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  font-weight: 600;
+  box-shadow: 0 4rpx 16rpx rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+}
+
+.submit-btn:active:not([disabled]) {
+  transform: scale(0.98);
+}
+
+.submit-btn[disabled] {
+  background: #94a3b8;
+  box-shadow: none;
+}
+
+/* ========== 弹窗样式 ========== */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal-content {
+  width: 80%;
+  max-width: 600rpx;
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 40rpx;
+  box-shadow: 0 8rpx 40rpx rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 40rpx;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 24rpx;
+  border: none;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  font-weight: 500;
+  text-align: center;
+}
+
+.modal-btn.cancel {
+  background-color: #e2e8f0;
+  color: #475569;
+}
+
+.modal-btn.confirm {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+}
+
+.modal-btn.confirm[disabled] {
+  background: #94a3b8;
+}
+
+/* ========== 管理员选择列表 ========== */
+.admin-list {
+  max-height: 400rpx;
+  overflow-y: auto;
+}
+
+.admin-item {
+  padding: 24rpx;
+  background-color: #f8fafc;
+  border: 2rpx solid #e2e8f0;
+  border-radius: 12rpx;
+  margin-bottom: 16rpx;
+  font-size: 28rpx;
+  color: #475569;
+  transition: all 0.2s ease;
+}
+
+.admin-item:active {
+  transform: scale(0.98);
+}
+
+.admin-item.selected {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border-color: #6366f1;
+}
+
+/* ========== 错误状态（保留兼容） ========== */
+.input-error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+.error-message {
+  font-size: 24rpx;
+  color: #ef4444;
+  margin-top: 8rpx;
+  display: block;
+}

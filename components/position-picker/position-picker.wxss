@@ -1,0 +1,166 @@
+/* components/position-picker/position-picker.wxss */
+
+.position-picker-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+}
+
+.position-picker-mask.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.position-picker-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 32rpx;
+  padding-bottom: calc(64rpx + env(safe-area-inset-bottom));
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+.picker-header {
+  text-align: center;
+  margin-bottom: 32rpx;
+}
+
+.picker-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.loading-view {
+  text-align: center;
+  padding: 60rpx 0;
+  color: #999;
+  font-size: 28rpx;
+}
+
+.picker-body {
+  /* 选择区域 */
+}
+
+.picker-view {
+  width: 100%;
+  height: 400rpx;
+  background: #fff;
+}
+
+.picker-column-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 30rpx;
+  color: #333;
+}
+
+.picker-indicator {
+  height: 80rpx;
+  border-top: 1rpx solid #e5e5e5;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+
+.picker-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.picker-row.hidden {
+  display: none;
+}
+
+.picker-label {
+  font-size: 28rpx;
+  color: #666;
+  flex-shrink: 0;
+}
+
+.picker-value {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+  font-size: 28rpx;
+  color: #333;
+  background: #f5f5f5;
+  padding: 16rpx 24rpx;
+  border-radius: 12rpx;
+  min-width: 200rpx;
+  justify-content: space-between;
+}
+
+.picker-value .arrow {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.divider {
+  height: 1rpx;
+  background: #eee;
+  margin: 24rpx 0;
+}
+
+.preview-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 24rpx;
+  background: #f8f8f8;
+  border-radius: 16rpx;
+  margin-bottom: 32rpx;
+}
+
+.preview-label {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.preview-value {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #999;
+}
+
+.preview-value.active {
+  color: #1890ff;
+}
+
+.picker-buttons {
+  display: flex;
+  gap: 24rpx;
+}
+
+.btn-cancel,
+.btn-confirm {
+  flex: 1;
+  height: 88rpx;
+  line-height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  margin: 0;
+}
+
+.btn-cancel {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.btn-confirm {
+  background: linear-gradient(135deg, #1890ff, #0d6ed9);
+  color: #fff;
+}

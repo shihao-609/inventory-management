@@ -1,0 +1,249 @@
+/* 隐藏界面样式 - 现代简洁风格 */
+.container {
+  min-height: 100vh;
+  background-color: #f8fafc;
+  padding: 24rpx;
+  padding-bottom: 40rpx;
+}
+
+.loading {
+  text-align: center;
+  padding: 120rpx;
+  color: #94a3b8;
+  font-size: 28rpx;
+}
+
+/* 操作按钮栏 */
+.action-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+  padding: 24rpx;
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  border: 1rpx solid rgba(226, 232, 240, 0.6);
+}
+
+.action-btn {
+  padding: 20rpx 32rpx;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff;
+  border-radius: 16rpx;
+  font-size: 26rpx;
+  font-weight: 500;
+  box-shadow: 0 4rpx 12rpx rgba(99, 102, 241, 0.3);
+  transition: all 0.2s ease;
+}
+
+.action-btn:active {
+  transform: scale(0.98);
+}
+
+.action-btn.danger {
+  background: linear-gradient(135deg, #ef4444, #f97316);
+  box-shadow: 0 4rpx 12rpx rgba(239, 68, 68, 0.3);
+}
+
+/* 商品列表 */
+.goods-list {
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.04);
+  border: 1rpx solid rgba(226, 232, 240, 0.6);
+}
+
+.list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 24rpx;
+  border-bottom: 1rpx solid #f1f5f9;
+  margin-bottom: 24rpx;
+}
+
+.list-header .title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.list-header .count {
+  font-size: 24rpx;
+  color: #64748b;
+  background-color: #f1f5f9;
+  padding: 8rpx 20rpx;
+  border-radius: 12rpx;
+}
+
+.goods-item {
+  padding: 24rpx;
+  border: 1rpx solid #e2e8f0;
+  border-radius: 20rpx;
+  margin-bottom: 20rpx;
+  background-color: #f8fafc;
+  transition: all 0.2s ease;
+}
+
+.goods-item:active {
+  background-color: #f1f5f9;
+  transform: translateY(-2rpx);
+}
+
+.goods-main {
+  margin-bottom: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx dashed #e2e8f0;
+}
+
+.goods-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12rpx;
+}
+
+.goods-code {
+  font-size: 24rpx;
+  color: #94a3b8;
+  font-family: monospace;
+}
+
+.goods-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20rpx;
+}
+
+.detail-row {
+  display: flex;
+  align-items: center;
+  min-width: 120rpx;
+}
+
+.detail-row .label {
+  font-size: 24rpx;
+  color: #64748b;
+  margin-right: 12rpx;
+}
+
+.detail-row .value {
+  font-size: 26rpx;
+  color: #1e293b;
+  font-weight: 500;
+}
+
+.detail-row .value.price {
+  color: #6366f1;
+  font-weight: 700;
+}
+
+.detail-row .value.cost {
+  color: #10b981;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.detail-row .text-gray {
+  color: #94a3b8;
+}
+
+/* 空状态 */
+.empty-state {
+  text-align: center;
+  padding: 80rpx 0;
+  color: #94a3b8;
+  font-size: 28rpx;
+}
+
+/* 弹窗 */
+.modal-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+}
+
+.modal-content {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 640rpx;
+  background-color: #ffffff;
+  border-radius: 24rpx;
+  z-index: 1000;
+  overflow: hidden;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+  padding: 32rpx;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 1rpx solid #f1f5f9;
+  color: #1e293b;
+}
+
+.modal-body {
+  padding: 32rpx;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 24rpx;
+  background-color: #f8fafc;
+  border-radius: 16rpx;
+  font-size: 28rpx;
+  margin-bottom: 24rpx;
+  box-sizing: border-box;
+  border: 2rpx solid #e2e8f0;
+  transition: all 0.2s ease;
+}
+
+.modal-input:focus {
+  border-color: #6366f1;
+  background-color: #ffffff;
+  box-shadow: 0 0 0 4rpx rgba(99, 102, 241, 0.1);
+}
+
+.modal-input:last-child {
+  margin-bottom: 0;
+}
+
+.modal-footer {
+  display: flex;
+  border-top: 1rpx solid #f1f5f9;
+}
+
+.modal-btn {
+  flex: 1;
+  padding: 28rpx 0;
+  text-align: center;
+  font-size: 30rpx;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.modal-btn.cancel {
+  color: #64748b;
+  border-right: 1rpx solid #f1f5f9;
+}
+
+.modal-btn.cancel:active {
+  background-color: #f8fafc;
+}
+
+.modal-btn.confirm {
+  color: #6366f1;
+}
+
+.modal-btn.confirm:active {
+  background-color: rgba(99, 102, 241, 0.1);
+}

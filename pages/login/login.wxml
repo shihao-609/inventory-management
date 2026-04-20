@@ -1,0 +1,93 @@
+<view class="container">
+  <!-- 登录卡片 -->
+  <view class="login-card">
+    <!-- 标题 -->
+    <view class="title">库存管理系统</view>
+    <view class="subtitle">请登录账号</view>
+    
+    <!-- 表单 -->
+    <view class="form">
+      <view class="form-item">
+        <text class="label">账号</text>
+        <input 
+          class="input-field" 
+          type="text"
+          placeholder="请输入员工账号"
+          value="{{username}}"
+          bindinput="onUsernameInput"
+          maxlength="12"
+        />
+      </view>
+      
+      <view class="form-item">
+        <text class="label">密码</text>
+        <input 
+          class="input-field" 
+          type="password"
+          placeholder="请输入密码"
+          value="{{password}}"
+          bindinput="onPasswordInput"
+          maxlength="16"
+        />
+      </view>
+      
+      <!-- 安全提示 -->
+      <view class="security-tip">
+        本系统仅对授权人员开放，所有登录行为均被记录。
+      </view>
+      
+      <!-- 管理员入口 -->
+      <view class="admin-entry" bindtap="showAdminLogin">
+        <text class="admin-text">管理员入口</text>
+      </view>
+      
+      <!-- 登录按钮 -->
+      <button 
+        class="login-btn" 
+        bindtap="login"
+        disabled="{{loading}}"
+      >
+        {{loading ? '登录中...' : '登录'}}
+      </button>
+    </view>
+  </view>
+  
+  <!-- 管理员登录对话框 -->
+  <view class="dialog-overlay" wx:if="{{showAdminDialog}}" bindtap="closeAdminDialog">
+    <view class="dialog-content" catchtap="stopPropagation">
+      <view class="dialog-header">
+        <text class="dialog-title">管理员登录</text>
+        <text class="dialog-close" bindtap="closeAdminDialog">✕</text>
+      </view>
+      <view class="dialog-body">
+        <view class="form-item">
+          <text class="label">管理员账号</text>
+          <input 
+            class="input-field" 
+            placeholder="请输入管理员账号" 
+            value="{{adminUsername}}"
+            bindinput="onAdminUsernameInput"
+            maxlength="12"
+          />
+        </view>
+        <view class="form-item">
+          <text class="label">管理员密码</text>
+          <input 
+            class="input-field" 
+            type="password"
+            placeholder="请输入管理员密码" 
+            value="{{adminPassword}}"
+            bindinput="onAdminPasswordInput"
+            maxlength="16"
+          />
+        </view>
+      </view>
+      <view class="dialog-footer">
+        <button class="dialog-btn cancel" bindtap="closeAdminDialog">取消</button>
+        <button class="dialog-btn confirm" bindtap="adminLogin" disabled="{{loading}}">
+          {{loading ? '登录中...' : '登录'}}
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

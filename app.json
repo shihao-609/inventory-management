@@ -1,0 +1,30 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/scan/scan",
+    "pages/detail/detail",
+    "pages/hidden/hidden",
+    "pages/settings/settings",
+    "pages/outRecords/outRecords",
+    "pages/admin/admin",
+    "pages/admin/transfer-master"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1890ff",
+    "navigationBarTitleText": "库存管理助手",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f5f5f5"
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "用于查找附近库存"
+    },
+    "scope.userInfo": {
+      "desc": "本系统仅对授权人员开放，所有登录行为均被记录"
+    }
+  },
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

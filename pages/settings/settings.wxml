@@ -1,0 +1,192 @@
+<view class="container">
+  <!-- 扫描字段配置 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">扫描字段配置</text>
+      <view class="add-btn" bindtap="showAddFieldModal">+ 添加字段</view>
+    </view>
+    
+    <view class="field-list">
+      <view class="field-item" wx:for="{{scanFields}}" wx:key="field">
+        <view class="field-info">
+          <view class="field-key">{{item.field}}</view>
+          <view class="field-label">{{item.label}}</view>
+          <view class="field-badges">
+            <text class="badge {{item.required ? 'required' : ''}}" wx:if="{{item.required}}">必填</text>
+            <text class="badge {{item.enabled ? 'enabled' : 'disabled'}}" wx:if="{{!item.required}}">
+              {{item.enabled ? '已启用' : '已禁用'}}
+            </text>
+          </view>
+        </view>
+        <view class="field-actions">
+          <switch 
+            checked="{{item.enabled}}" 
+            data-index="{{index}}"
+            bindchange="toggleFieldEnabled"
+            color="#1890ff"
+            wx:if="{{!item.required}}"
+          />
+          <view class="action-icon" data-index="{{index}}" bindtap="showEditFieldModal">编辑</view>
+          <view class="action-icon danger" data-index="{{index}}" bindtap="deleteField" wx:if="{{!item.required}}">删除</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 密码管理 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">密码管理</text>
+    </view>
+    <view class="menu-item" bindtap="showPasswordModal">
+      <text>修改隐藏界面密码</text>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <!-- 数据管理 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">数据管理</text>
+    </view>
+    <view class="menu-item" bindtap="clearCache">
+      <text>清除本地缓存</text>
+      <text class="arrow">></text>
+    </view>
+    <view class="menu-item danger" bindtap="showClearDataModal">
+      <text>清空所有数据</text>
+      <text class="arrow">></text>
+    </view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="section">
+    <view class="section-header">
+      <text class="section-title">其他</text>
+    </view>
+    <view class="menu-item" bindtap="showAbout">
+      <text>关于</text>
+      <text class="arrow">v1.0.0 ></text>
+    </view>
+  </view>
+
+  <!-- 添加字段弹窗 -->
+  <view class="modal-mask" wx:if="{{showAddFieldModal}}" bindtap="closeAddFieldModal"></view>
+  <view class="modal" wx:if="{{showAddFieldModal}}">
+    <view class="modal-header">添加字段</view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="label">字段key</text>
+        <input 
+          class="input-field" 
+          placeholder="如：name, batchNo"
+          value="{{tempField.field}}"
+          bindinput="onFieldKeyInput"
+        />
+      </view>
+      <view class="form-item">
+        <text class="label">显示标签</text>
+        <input 
+          class="input-field" 
+          placeholder="如：商品名称"
+          value="{{tempField.label}}"
+          bindinput="onFieldLabelInput"
+        />
+      </view>
+      <view class="form-item switch-item">
+        <text class="label">启用</text>
+        <switch 
+          checked="{{tempField.enabled}}"
+          bindchange="onTempFieldSwitch"
+          color="#1890ff"
+        />
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="modal-btn cancel" bindtap="closeAddFieldModal">取消</view>
+      <view class="modal-btn confirm" bindtap="addField">添加</view>
+    </view>
+  </view>
+
+  <!-- 编辑字段弹窗 -->
+  <view class="modal-mask" wx:if="{{showEditFieldModal}}" bindtap="closeEditFieldModal"></view>
+  <view class="modal" wx:if="{{showEditFieldModal}}">
+    <view class="modal-header">编辑字段</view>
+    <view class="modal-body">
+      <view class="form-item">
+        <text class="label">字段key</text>
+        <input 
+          class="input-field" 
+          value="{{tempField.field}}"
+          disabled
+        />
+      </view>
+      <view class="form-item">
+        <text class="label">显示标签</text>
+        <input 
+          class="input-field" 
+          placeholder="请输入标签"
+          value="{{tempField.label}}"
+          bindinput="onEditFieldLabelInput"
+        />
+      </view>
+      <view class="form-item switch-item">
+        <text class="label">启用</text>
+        <switch 
+          checked="{{tempField.enabled}}"
+          bindchange="onEditFieldSwitch"
+          color="#1890ff"
+        />
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="modal-btn cancel" bindtap="closeEditFieldModal">取消</view>
+      <view class="modal-btn confirm" bindtap="saveFieldEdit">保存</view>
+    </view>
+  </view>
+
+  <!-- 修改密码弹窗 -->
+  <view class="modal-mask" wx:if="{{showPasswordModal}}" bindtap="closePasswordModal"></view>
+  <view class="modal" wx:if="{{showPasswordModal}}">
+    <view class="modal-header">修改隐藏界面密码</view>
+    <view class="modal-body">
+      <view class="form-item">
+        <input 
+          class="input-field" 
+          password
+          placeholder="新密码（至少6位）"
+          value="{{newPassword}}"
+          bindinput="onNewPasswordInput"
+        />
+      </view>
+      <view class="form-item">
+        <input 
+          class="input-field" 
+          password
+          placeholder="确认新密码"
+          value="{{confirmPassword}}"
+          bindinput="onConfirmPasswordInput"
+        />
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="modal-btn cancel" bindtap="closePasswordModal">取消</view>
+      <view class="modal-btn confirm" bindtap="savePassword">保存</view>
+    </view>
+  </view>
+
+  <!-- 清空数据确认弹窗 -->
+  <view class="modal-mask" wx:if="{{showClearDataModal}}" bindtap="closeClearDataModal"></view>
+  <view class="modal" wx:if="{{showClearDataModal}}">
+    <view class="modal-header">清空所有数据</view>
+    <view class="modal-body">
+      <view class="warning-text">
+        确定要清空所有商品数据吗？此操作不可恢复！
+      </view>
+    </view>
+    <view class="modal-footer">
+      <view class="modal-btn cancel" bindtap="closeClearDataModal">取消</view>
+      <view class="modal-btn danger" bindtap="clearAllData">确认清空</view>
+    </view>
+  </view>
+</view>
