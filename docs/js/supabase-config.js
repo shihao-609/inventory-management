@@ -9,7 +9,8 @@
  */
 
 const SUPABASE_URL = 'https://bvgtenrrxdhczlvebjxj.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ2Z3RlbnJyeGRoY3psdmVianhqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYzMjk5NTEsImV4cCI6MjA5MTkwNTk1MX0.K4HBL1_sGg-79N5CoF_M6V-YlPibSrdoVvd9k515D28';
+// 使用新版 Publishable Key
+const SUPABASE_ANON_KEY = 'sb_publishable_CaqVfE6K1Mq_7SvBd3vGyA_nhUq2z4z';
 
 // CORS 代理配置 - 用于解决 GitHub Pages 访问 Supabase 的跨域问题
 // 使用多个代理服务，如果其中一个失败会自动切换到下一个
