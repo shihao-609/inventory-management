@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>库存管理后台系统</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <!-- 登录页面 -->
+  <div id="loginPage" class="login-page">
+    <div class="login-container">
+      <div class="login-box">
+        <div class="login-header">
+          <div class="logo">
+            <i class="fas fa-warehouse"></i>
+          </div>
+          <h1>库存管理后台</h1>
+          <p>请使用小程序账号登录</p>
+        </div>
+        <form id="loginForm" class="login-form">
+          <div class="form-group">
+            <label for="username">
+              <i class="fas fa-user"></i>
+            </label>
+            <input 
+              type="text" 
+              id="username" 
+              name="username" 
+              placeholder="请输入账号" 
+              required
+              autocomplete="username"
+            >
+          </div>
+          <div class="form-group">
+            <label for="password">
+              <i class="fas fa-lock"></i>
+            </label>
+            <input 
+              type="password" 
+              id="password" 
+              name="password" 
+              placeholder="请输入密码" 
+              required
+              autocomplete="current-password"
+            >
+            <button type="button" class="toggle-password" id="togglePassword">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe">
+              <span>记住我</span>
+            </label>
+          </div>
+          <button type="submit" class="login-btn" id="loginBtn">
+            <span class="btn-text">登录</span>
+            <span class="btn-loading" style="display: none;">
+              <i class="fas fa-spinner fa-spin"></i> 登录中...
+            </span>
+          </button>
+        </form>
+        <div class="login-footer">
+          <p>© 2024 库存管理助手</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 后台管理主页面 -->
+  <div id="adminPage" class="admin-page" style="display: none;">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <i class="fas fa-warehouse"></i>
+          <span>库存管理</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <ul>
+          <li class="active">
+            <a href="#dashboard" data-page="dashboard">
+              <i class="fas fa-tachometer-alt"></i>
+              <span>仪表盘</span>
+            </a>
+          </li>
+          <li>
+            <a href="#inventory" data-page="inventory">
+              <i class="fas fa-boxes"></i>
+              <span>库存管理</span>
+            </a>
+          </li>
+          <li>
+            <a href="#records" data-page="records">
+              <i class="fas fa-history"></i>
+              <span>出库记录</span>
+            </a>
+          </li>
+          <li>
+            <a href="#users" data-page="users">
+              <i class="fas fa-users"></i>
+              <span>用户管理</span>
+            </a>
+          </li>
+          <li>
+            <a href="#settings" data-page="settings">
+              <i class="fas fa-cog"></i>
+              <span>系统设置</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-info">
+          <i class="fas fa-user-circle"></i>
+          <span id="currentUser">管理员</span>
+        </div>
+        <button class="logout-btn" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>退出登录</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 主内容区 -->
+    <main class="main-content">
+      <!-- 顶部导航 -->
+      <header class="top-header">
+        <button class="menu-toggle" id="menuToggle">
+          <i class="fas fa-bars"></i>
+        </button>
+        <div class="breadcrumb">
+          <span id="pageTitle">仪表盘</span>
+        </div>
+        <div class="header-actions">
+          <button class="action-btn" id="refreshBtn">
+            <i class="fas fa-sync-alt"></i>
+          </button>
+          <button class="action-btn" id="fullscreenBtn">
+            <i class="fas fa-expand"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- 页面内容 -->
+      <div class="page-content">
+        <!-- 仪表盘页面 -->
+        <div id="dashboardPage" class="page active">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon" style="background: #e3f2fd; color: #1976d2;">
+                <i class="fas fa-box"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="totalItems">0</h3>
+                <p>库存总数量</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background: #e8f5e9; color: #388e3c;">
+                <i class="fas fa-warehouse"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="totalTypes">0</h3>
+                <p>库存种类</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background: #fff3e0; color: #f57c00;">
+                <i class="fas fa-exclamation-triangle"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="lowStockCount">0</h3>
+                <p>库存紧张</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon" style="background: #fce4ec; color: #c2185b;">
+                <i class="fas fa-arrow-up"></i>
+              </div>
+              <div class="stat-info">
+                <h3 id="todayOut">0</h3>
+                <p>今日出库</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dashboard-sections">
+            <div class="section-card">
+              <div class="section-header">
+                <h3><i class="fas fa-chart-line"></i> 库存趋势</h3>
+              </div>
+              <div class="section-body">
+                <canvas id="trendChart" width="700" height="280"></canvas>
+              </div>
+            </div>
+            <div class="section-card">
+              <div class="section-header">
+                <h3><i class="fas fa-clock"></i> 最近操作</h3>
+              </div>
+              <div class="section-body">
+                <ul class="activity-list" id="recentActivity">
+                  <li class="empty">暂无数据</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 库存管理页面 -->
+        <div id="inventoryPage" class="page">
+          <div class="page-header">
+            <div class="filter-box" style="flex: 1; flex-wrap: wrap;">
+              <!-- 位置级联筛选 -->
+              <select id="filterFloor" onchange="onFilterFloorChange()">
+                <option value="">全部楼层</option>
+              </select>
+              <select id="filterType" onchange="onFilterTypeChange()">
+                <option value="">全部类型</option>
+              </select>
+              <select id="filterNumber" onchange="onFilterNumberChange()">
+                <option value="">全部编号</option>
+              </select>
+              <select id="filterLayer" onchange="onFilterLayerChange()" style="display: none;">
+                <option value="">全部层</option>
+              </select>
+              <select id="stockFilter">
+                <option value="">全部库存</option>
+                <option value="zero">缺货（0）</option>
+                <option value="low">库存紧张（&lt;10）</option>
+                <option value="normal">库存充足（≥10）</option>
+              </select>
+              <!-- 搜索框移到筛选旁边 -->
+              <div class="search-box" style="max-width: 320px; min-width: 280px; flex: 1;">
+                <i class="fas fa-search" style="left: 12px;"></i>
+                <input type="text" id="inventorySearch" placeholder="搜索商品名称、编码..." style="padding-left: 36px;">
+              </div>
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table inventory-table" id="inventoryTable">
+              <thead>
+                <tr>
+                  <th>商品名称</th>
+                  <th>商品编码</th>
+                  <th>售价</th>
+                  <th>成本价</th>
+                  <th>库存</th>
+                  <th>位置</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="inventoryTableBody">
+                <tr class="empty-row">
+                  <td colspan="7">暂无数据</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination" id="inventoryPagination">
+            <!-- 分页控件 -->
+          </div>
+        </div>
+
+        <!-- 出库记录页面 -->
+        <div id="recordsPage" class="page">
+          <div class="page-header">
+            <div class="filter-box">
+              <input type="date" id="recordDateFilter">
+            </div>
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="recordsSearch" placeholder="搜索物品名称...">
+            </div>
+          </div>
+          <div class="table-container">
+            <table class="data-table" id="recordsTable">
+              <thead>
+                <tr>
+                  <th>时间</th>
+                  <th>物品名称</th>
+                  <th>数量</th>
+                </tr>
+              </thead>
+              <tbody id="recordsTableBody">
+                <tr class="empty-row">
+                  <td colspan="3">暂无出库记录</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 用户管理页面 -->
+        <div id="usersPage" class="page">
+          <div class="page-header">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="usersSearch" placeholder="搜索用户...">
+            </div>
+            <button class="btn btn-primary" id="addUserBtn">
+              <i class="fas fa-plus"></i> 新增用户
+            </button>
+          </div>
+          <div class="table-container">
+            <table class="data-table" id="usersTable">
+              <thead>
+                <tr>
+                  <th>用户名</th>
+                  <th>姓名</th>
+                  <th>角色</th>
+                  <th>状态</th>
+                  <th>创建时间</th>
+                  <th>操作</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr class="empty-row">
+                  <td colspan="6">暂无数据</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- 系统设置页面 -->
+        <div id="settingsPage" class="page">
+          <div class="settings-grid">
+            <div class="settings-card">
+              <div class="settings-header">
+                <h3><i class="fas fa-database"></i> 数据备份</h3>
+              </div>
+              <div class="settings-body">
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">备份所有库存数据到本地JSON文件</p>
+                <div class="backup-info" style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; color: var(--text-muted);">
+                  <i class="fas fa-info-circle"></i> 备份内容包括：商品信息、库存记录、位置配置
+                </div>
+                <button class="btn btn-primary" id="backupBtn" onclick="backupData()">
+                  <i class="fas fa-download"></i> 立即备份
+                </button>
+              </div>
+            </div>
+            <div class="settings-card">
+              <div class="settings-header">
+                <h3><i class="fas fa-upload"></i> 数据恢复</h3>
+              </div>
+              <div class="settings-body">
+                <p style="color: var(--text-secondary); margin-bottom: 16px;">从本地JSON文件恢复数据</p>
+                <div class="restore-warning" style="background: #fef3c7; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 13px; color: #92400e;">
+                  <i class="fas fa-exclamation-triangle"></i> 警告：恢复数据将覆盖当前所有数据，请谨慎操作！
+                </div>
+                <input type="file" id="restoreFile" accept=".json" style="display: none;" onchange="restoreData(this)">
+                <button class="btn btn-secondary" onclick="document.getElementById('restoreFile').click()">
+                  <i class="fas fa-upload"></i> 选择备份文件
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- 消息提示 -->
+  <div id="toast" class="toast">
+    <i class="fas fa-check-circle"></i>
+    <span id="toastMessage">操作成功</span>
+  </div>
+
+  <!-- 编辑库存弹窗 -->
+  <div id="editModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeEditModal()"></div>
+    <div class="modal-content">
+      <div class="modal-header" style="background: #1a1a2e; color: white;">
+        <h3>编辑商品</h3>
+        <button class="modal-close" onclick="closeEditModal()" style="color: white;">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="padding: 24px;">
+        <form id="editForm">
+          <input type="hidden" id="editId">
+          
+          <!-- 商品名称 -->
+          <div class="form-group-vertical">
+            <label>商品名称</label>
+            <input type="text" id="editName" required>
+            <span class="form-hint">请输入商品的完整名称</span>
+          </div>
+          
+          <!-- 商品编码 -->
+          <div class="form-group-vertical">
+            <label>商品编码</label>
+            <input type="text" id="editBarcode">
+            <span class="form-hint">请输入商品的唯一编码</span>
+          </div>
+          
+          <!-- 价格行 -->
+          <div class="form-row">
+            <div class="form-group-vertical">
+              <label>销售价格</label>
+              <input type="number" id="editPrice" min="0" step="0.01">
+              <span class="form-hint">单位：元</span>
+            </div>
+            <div class="form-group-vertical">
+              <label>成本价格</label>
+              <input type="number" id="editCostPrice" min="0" step="0.01">
+              <span class="form-hint">单位：元</span>
+            </div>
+          </div>
+          
+          <!-- 库存数量 -->
+          <div class="form-group-vertical">
+            <label>库存数量</label>
+            <input type="number" id="editQuantity" required min="0">
+            <span class="form-hint">当前商品的库存数量</span>
+          </div>
+          
+          <!-- 存放位置 -->
+          <div class="form-group-vertical">
+            <label>当前位置</label>
+            <input type="text" id="editPositionDisplay" readonly style="background: #f5f5f5; margin-bottom: 12px; font-weight: 500; color: #1a1a2e;">
+          </div>
+          
+          <!-- 四级级联选择器 -->
+          <div class="form-group-vertical">
+            <label>修改位置</label>
+            <div class="cascade-select-row">
+              <select id="editFloor" onchange="onFloorChange()">
+                <option value="">选择楼层</option>
+              </select>
+              <select id="editType" onchange="onTypeChange()">
+                <option value="">选择类型</option>
+              </select>
+              <select id="editNumber" onchange="onNumberChange()">
+                <option value="">选择编号</option>
+              </select>
+            </div>
+            <!-- 层选择器（货架和展会类型显示） -->
+            <div class="cascade-select-row" id="layerSelectRow" style="margin-top: 10px; display: none;">
+              <select id="editLayer" onchange="onLayerChange()" style="grid-column: span 1;">
+                <option value="">选择层</option>
+              </select>
+            </div>
+            <span class="form-hint">依次选择楼层、类型、编号、层（如有）</span>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer" style="display: flex; gap: 12px; padding: 16px 24px; border-top: 1px solid #f0f0f0;">
+        <button class="btn" onclick="saveEdit()" style="flex: 1; background: #10b981; color: white; height: 44px; border: none; border-radius: 6px; font-size: 15px; cursor: pointer;">
+          <i class="fas fa-save"></i> 保存
+        </button>
+        <button class="btn" onclick="closeEditModal()" style="flex: 1; background: #1a1a2e; color: white; height: 44px; border: none; border-radius: 6px; font-size: 15px; cursor: pointer;">
+          取消
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 删除确认弹窗 -->
+  <div id="deleteModal" class="modal" style="display: none;">
+    <div class="modal-overlay" onclick="closeDeleteModal()"></div>
+    <div class="modal-content modal-small">
+      <div class="modal-header">
+        <h3><i class="fas fa-exclamation-triangle" style="color: #ff4d4f;"></i> 确认删除</h3>
+        <button class="modal-close" onclick="closeDeleteModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>确定要删除 <strong id="deleteItemName"></strong> 吗？</p>
+        <p class="text-muted">此操作不可恢复，请谨慎操作。</p>
+        <input type="hidden" id="deleteId">
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeDeleteModal()">取消</button>
+        <button class="btn btn-danger" onclick="confirmDelete()">
+          <i class="fas fa-trash"></i> 删除
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/supabase-config.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
